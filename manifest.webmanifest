@@ -2,11 +2,11 @@
   "name": "Словолинии — русские сканворды",
   "short_name": "Сканворды",
   "lang": "ru",
-  "start_url": "./?v=9",
+  "start_url": "./?v=13",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f3f0e6",
-  "theme_color": "#f3f0e6",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     { "src": "icons/icon-180.png", "sizes": "180x180", "type": "image/png" },
     { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }

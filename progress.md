@@ -17,3 +17,5 @@ Original prompt: Build and publish an original, dense, fit-to-screen scanword fo
 - 2026-09-25: Added visible «− мельче» / «+ крупнее» controls and two-finger pinch zoom up to 220%, with panning for the enlarged grid. The default still fits the screen and the two-row tile tray remains flush with the bottom edge.
 - 2026-09-25: v12: six hand-authored 10×7 boards; each has 56 letter cells, 10 in-cell clues and four grey blocks. No unused white cells. Mixed →/← rows vary clue positions.
 - 2026-09-25: iPhone 390×844 visual QA: grid flush beneath header at full width, clue bar flush beneath grid, remaining space solid grey keyboard well, exactly two bottom tile rows. Local Playwright browser smoke passes interactions/persistence/completion and records screenshots in output/v12.
+
+- 2026-09-25: v13 removes the grey keyboard well. The 10×7 grid fills all space between header and clue bar using independent cell width and height; two tile rows touch the clue bar. Shortened four long clues and replaced an awkward cinema clue; browser smoke verifies every in-cell clue is unobscured at 390×844 and 375×667.

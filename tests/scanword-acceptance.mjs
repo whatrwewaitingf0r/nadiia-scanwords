@@ -4,7 +4,7 @@ const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const css=readFileSync(new URL('../styles.css',import.meta.url),'utf8');
 const app=readFileSync(new URL('../js/app.js',import.meta.url),'utf8');
 const puzzles=JSON.parse(readFileSync(new URL('../data/puzzles.json',import.meta.url),'utf8'));
-assert.match(html,/content="v12"/);
+assert.match(html,/content="v13"/);
 assert.match(html,/>Сканворды</);
 assert.match(html,/id="menu-button"/);
 assert.match(html,/id="zoom-out"[^>]*>[\s\S]*?−/);
@@ -16,7 +16,7 @@ assert.match(html,/class="board-area"[\s\S]*?<\/section>\s*<section class="clue-
 assert.match(css,/--board-cols:\s*10/);
 assert.match(css,/--board-rows:\s*7/);
 assert.match(css,/\.grid-cell\.answer\{[^}]*font-size:\s*clamp\(20px,/s,'answer letters must start at 20px');
-assert.match(css,/\.clue-text\{[^}]*font-size:\s*8px/s,'clue cells must start at 8px');
+assert.match(css,/\.clue-text\{[^}]*font-size:\s*clamp\(9px/s,'clue text must wrap legibly');
 assert.match(css,/grid-template-rows:\s*repeat\(2,/);
 assert.match(app,/pointerdown/); assert.match(app,/pointermove/); assert.match(app,/pointerup/);
 assert.match(app,/setZoom/); assert.match(app,/Math\.min\(2\.2/);
@@ -30,4 +30,4 @@ assert.equal(new Set(allWords.map(w=>w.clue)).size,allWords.length,'every clue m
 assert.doesNotMatch(app,/is-wrong/,'must not flash wrong letters instantly');
 assert.match(app,/sparkleWord/); assert.match(app,/launchConfetti/);
 assert.match(app,/window\.render_game_to_text/);
-console.log('scanword v12 large-type acceptance checks passed');
+console.log('scanword v13 large-type acceptance checks passed');

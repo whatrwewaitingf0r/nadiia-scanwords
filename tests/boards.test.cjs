@@ -41,14 +41,3 @@ test('six handcrafted 10 by 7 boards have no unused white cells', () => {
     assert.equal(letters.size + clues.size + puzzle.blocks.length, 70);
   }
 });
-
-test('v12 screen has edge-to-edge board and solid keyboard well', () => {
-  const html = read('index.html'), css = read('styles.css'), app = read('js/app.js');
-  assert.match(html, /content="v12"/);
-  assert.match(css, /--board-cols:\s*10/);
-  assert.match(css, /--board-rows:\s*7/);
-  assert.match(css, /\.board-area\{[^}]*align-items:flex-start/s);
-  assert.match(css, /\.keyboard-well\{[^}]*background:var\(--well\)/s);
-  assert.match(app, /element\.classList\.add\('block'\)/);
-  assert.match(app, /Math\.min\(availableWidth\/cols,availableHeight\/rows\)/);
-});

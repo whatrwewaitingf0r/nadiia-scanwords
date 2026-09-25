@@ -14,8 +14,8 @@ test('page is direct-file, large-type, and iPhone ready', () => {
   assert.match(css, /safe-area-inset-bottom/);
   assert.match(css, /height:\s*100dvh/);
   assert.match(css, /font-size:\s*clamp\(20px,/);
-  assert.match(css, /\.clue-text\{font-size:\s*8px/);
-  assert.ok(html.indexOf('class="game-foot"') < html.indexOf('id="letter-tiles"'), 'tiles must be the last game control above the bottom safe area');
+  assert.match(css, /\.clue-text\{[^}]*font-size:\s*clamp\(9px/);
+  assert.ok(html.indexOf('class="clue-bar"') < html.indexOf('id="letter-tiles"'), 'tiles must sit directly below the clue bar');
   assert.match(css, /-webkit-text-size-adjust:\s*100%/);
   assert.match(css, /min-width:\s*44px/);
   assert.match(css, /min-height:\s*44px/);
