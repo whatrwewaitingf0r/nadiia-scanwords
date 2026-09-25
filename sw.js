@@ -1,4 +1,4 @@
-const CACHE = 'nadiia-scanwords-v5';
+const CACHE = 'nadiia-scanwords-v6';
 const FILES = [
   './', './index.html', './styles.css', './manifest.webmanifest',
   './js/generator.js', './js/app.js', './data/words.js', './data/puzzles.js',
@@ -19,4 +19,3 @@ self.addEventListener('fetch', (event) => {
     return response;
   }).catch(() => caches.match('./index.html'))));
 });
-

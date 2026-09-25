@@ -35,23 +35,33 @@ function inspect(puzzle) {
     }
   }
   const used = new Set([...answers.keys(), ...clues]);
-  return { answers, clues, occupancy: used.size / (puzzle.rows * puzzle.cols) };
+  return {
+    answers,
+    clues,
+    occupancy: used.size / (puzzle.rows * puzzle.cols),
+    clueRows: new Set([...clues].map((value) => value.split(':')[0])).size,
+    clueCols: new Set([...clues].map((value) => value.split(':')[1])).size,
+  };
 }
 
-test('generator exports deterministic packed 10 by 7 scanwords', () => {
+test('generator exports deterministic newspaper-style 10 by 7 scanwords', () => {
   const { createPuzzle } = require('../js/generator.js');
-  const first = createPuzzle(words, 'packed-v5', 1);
-  const again = createPuzzle(words, 'packed-v5', 1);
+  const first = createPuzzle(words, 'packed-v6', 1);
+  const again = createPuzzle(words, 'packed-v6', 1);
   assert.deepEqual(first, again);
   assert.equal(first.cols, 10);
   assert.equal(first.rows, 7);
+  assert.ok(first.words.length >= 11);
   assert.ok(first.words.some((word) => word.direction === 'across'));
   assert.ok(first.words.some((word) => word.direction === 'left'));
   assert.ok(first.words.some((word) => word.direction === 'down'));
-  assert.ok(inspect(first).occupancy >= 0.85);
+  const report = inspect(first);
+  assert.equal(report.occupancy, 1, 'every rendered cell must be a real clue or answer letter');
+  assert.ok(report.clueRows >= 5, 'clues must be scattered through at least five rows');
+  assert.ok(report.clueCols >= 6, 'clues must be scattered through at least six columns');
 });
 
-test('catalog keeps 90 numbered high-fill puzzles with clue-in-cell geometry', () => {
+test('catalog keeps 90 numbered zero-blank puzzles with scattered clue cells', () => {
   assert.equal(puzzles.length, 90);
   assert.deepEqual(puzzles.map((p) => p.number), Array.from({ length: 90 }, (_, i) => i + 1));
   assert.equal(new Set(puzzles.map((p) => JSON.stringify(p.words))).size, 90);
@@ -59,7 +69,10 @@ test('catalog keeps 90 numbered high-fill puzzles with clue-in-cell geometry', (
     assert.equal(puzzle.cols, 10, puzzle.id);
     assert.equal(puzzle.rows, 7, puzzle.id);
     assert.ok(puzzle.words.every((word) => ['across', 'left', 'down'].includes(word.direction)), puzzle.id);
-    assert.ok(inspect(puzzle).occupancy >= 0.85, `${puzzle.id}: sparse board`);
+    const report = inspect(puzzle);
+    assert.equal(report.occupancy, 1, `${puzzle.id}: contains a fake or unused cell`);
+    assert.ok(report.clueRows >= 5, `${puzzle.id}: clues are bunched into rows`);
+    assert.ok(report.clueCols >= 6, `${puzzle.id}: clues are bunched into columns`);
   }
 });
 

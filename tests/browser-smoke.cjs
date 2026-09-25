@@ -4,13 +4,13 @@ const assert = require('node:assert/strict');
 const { chromium } = require('/opt/homebrew/lib/node_modules/@browserbasehq/browse-cli/node_modules/playwright');
 
 const baseUrl = process.argv[2] || `file://${path.join(__dirname, '..', 'index.html')}`;
-const output = path.join(__dirname, '..', 'output', 'mobile-v5');
+const output = path.join(__dirname, '..', 'output', 'mobile-v6');
 fs.mkdirSync(output, { recursive: true });
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
   const scenarios = [
-    { name: 'iphone-se', width: 375, height: 667, visibleCols: 7, visibleRows: 10 },
+    { name: 'iphone-se', width: 375, height: 667, visibleCols: 10, visibleRows: 7 },
     { name: 'ipad-landscape', width: 1366, height: 1024, visibleCols: 10, visibleRows: 7 },
   ];
 
@@ -33,10 +33,12 @@ fs.mkdirSync(output, { recursive: true });
     assert.equal(stateBefore.grid.rows, scenario.visibleRows);
     assert.equal(stateBefore.grid.occupied, 70);
     assert.equal(await page.locator('.grid-cell').count(), 70);
-    assert.equal(await page.locator('.grid-cell.clue').count(), 12);
-    assert.equal(await page.locator('.grid-cell.answer').count(), 58);
+    const expectedClues = await page.evaluate(() => window.SCANWORD_PUZZLES[0].words.length);
+    assert.equal(await page.locator('.grid-cell.clue').count(), expectedClues);
+    assert.equal(await page.locator('.grid-cell.answer').count(), 70 - expectedClues);
     assert.equal(await page.locator('.grid-cell.blank').count(), 0);
-    assert.equal(await page.locator('.grid-cell.answer.is-active').count(), 9);
+    const activeLength = await page.evaluate(() => window.SCANWORD_PUZZLES[0].words[0].answer.length);
+    assert.equal(await page.locator('.grid-cell.answer.is-active').count(), activeLength);
 
     const sizing = await page.evaluate(() => {
       const cell = document.querySelector('.grid-cell.answer').getBoundingClientRect();
@@ -58,15 +60,17 @@ fs.mkdirSync(output, { recursive: true });
     const stateAfter = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
     assert.equal(stateAfter.filledCells, stateBefore.filledCells + 1);
     await page.locator('#hint-extras').click();
-    assert.equal(await page.locator('.letter-tile').count(), 9);
+    assert.equal(await page.locator('.letter-tile').count(), activeLength);
 
-    await page.locator('.grid-cell.clue[data-word-id="w2"]').click();
-    assert.equal(await page.locator('#direction-badge').textContent(), scenario.visibleCols === 7 ? '↑' : '←');
-    await page.locator('.grid-cell.clue[data-word-id="w3"]').click();
-    assert.equal(await page.locator('#direction-badge').textContent(), scenario.visibleCols === 7 ? '←' : '↓');
+    const leftWord = await page.evaluate(() => window.SCANWORD_PUZZLES[0].words.find((word) => word.direction === 'left').id);
+    const downWord = await page.evaluate(() => window.SCANWORD_PUZZLES[0].words.find((word) => word.direction === 'down').id);
+    await page.locator(`.grid-cell.clue[data-word-id="${leftWord}"]`).click();
+    assert.equal(await page.locator('#direction-badge').textContent(), '←');
+    await page.locator(`.grid-cell.clue[data-word-id="${downWord}"]`).click();
+    assert.equal(await page.locator('#direction-badge').textContent(), '↓');
     await page.screenshot({ path: path.join(output, `${scenario.name}-game.png`), fullPage: false });
 
-    const stored = await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v5'));
+    const stored = await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v6'));
     assert.ok(stored && stored.includes('scanword-001'));
     await page.reload({ waitUntil: 'domcontentloaded' });
     await page.locator('.puzzle-card').first().click();
@@ -80,7 +84,7 @@ fs.mkdirSync(output, { recursive: true });
     await page.waitForSelector('#complete-dialog:not([hidden])');
     const completedState = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
     assert.equal(completedState.complete, true);
-    assert.equal(JSON.parse(await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v5')))['scanword-001'].completed, true);
+    assert.equal(JSON.parse(await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v6')))['scanword-001'].completed, true);
     assert.deepEqual(errors, []);
     await context.close();
   }
