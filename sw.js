@@ -1,7 +1,7 @@
-const CACHE = 'nadiia-scanwords-v9';
+const CACHE = 'nadiia-scanwords-v10';
 const FILES = [
   './', './index.html', './styles.css', './manifest.webmanifest',
-  './js/generator.js', './js/app.js', './data/words.js', './data/puzzles.js',
+  './js/app.js', './data/puzzles.js',
   './icons/icon.svg', './icons/icon-180.png', './icons/icon-512.png',
 ];
 self.addEventListener('install', (event) => { event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(FILES)).then(() => self.skipWaiting())); });
