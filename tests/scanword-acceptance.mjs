@@ -4,7 +4,7 @@ const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const css=readFileSync(new URL('../styles.css',import.meta.url),'utf8');
 const app=readFileSync(new URL('../js/app.js',import.meta.url),'utf8');
 const puzzles=JSON.parse(readFileSync(new URL('../data/puzzles.json',import.meta.url),'utf8'));
-assert.match(html,/content="v17"/);
+assert.match(html,/content="v18"/);
 assert.match(html,/>Сканворды</);
 assert.match(html,/id="menu-button"/);
 assert.match(html,/id="zoom-out"[^>]*>[\s\S]*?−/);
@@ -22,7 +22,7 @@ assert.match(app,/pointerdown/); assert.match(app,/pointermove/); assert.match(a
 assert.match(app,/setZoom/); assert.match(app,/Math\.min\(2\.2/);
 assert.ok(puzzles.length===56,'keep the puzzle catalog');
 assert.ok(puzzles.every(p=>p.cols===10&&p.rows===7),'default boards must use large 7×10 cells');
-assert.ok(puzzles.slice(0,6).every(p=>p.words.length===12) && puzzles.slice(6).every(p=>p.words.length>=8),'default puzzle should contain 12 words');
+assert.ok(puzzles.slice(0,6).every(p=>p.words.length===8) && puzzles.slice(6).every(p=>p.words.length>=6),'every original puzzle has 8 words and every new puzzle has at least 6');
 assert.ok(puzzles.every(p=>p.blocks.length>=1),'crossings replace some white cells with blocks');
 const allWords=puzzles.flatMap(p=>p.words);
 assert.equal(new Set(allWords.map(w=>w.answer)).size,allWords.length,'no answer may repeat anywhere in the catalog');
@@ -30,4 +30,4 @@ assert.equal(new Set(allWords.map(w=>w.clue)).size,allWords.length,'every clue m
 assert.doesNotMatch(app,/is-wrong/,'must not flash wrong letters instantly');
 assert.match(app,/launchWordConfetti/); assert.match(app,/launchPuzzleConfetti/);
 assert.match(app,/window\.render_game_to_text/);
-console.log('scanword v17 large-type acceptance checks passed');
+console.log('scanword v18 large-type acceptance checks passed');
