@@ -21,11 +21,10 @@ test('page is direct-file and iPhone ready', () => {
 test('Russian gameplay labels and offline assets are present', () => {
   const html = read('index.html');
   const app = read('js/app.js');
-  assert.match(html, /Открыть букву/);
-  assert.match(html, /Убрать лишние/);
-  assert.match(html, /Открыть слово/);
+  assert.match(html, />Подсказки</);
+  assert.match(html, /aria-label="Вид сетки"/);
+  assert.match(html, /aria-label="Тема"/);
   assert.match(app, /localStorage/);
   assert.match(app, /render_game_to_text/);
   assert.doesNotMatch(`${html}${app}`, /MBEX/i);
 });
-

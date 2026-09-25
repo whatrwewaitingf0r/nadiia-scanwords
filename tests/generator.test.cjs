@@ -61,10 +61,14 @@ test('generator exports deterministic newspaper-style 10 by 7 scanwords', () => 
   assert.ok(report.clueCols >= 6, 'clues must be scattered through at least six columns');
 });
 
-test('catalog keeps 90 numbered zero-blank puzzles with scattered clue cells', () => {
-  assert.equal(puzzles.length, 90);
-  assert.deepEqual(puzzles.map((p) => p.number), Array.from({ length: 90 }, (_, i) => i + 1));
-  assert.equal(new Set(puzzles.map((p) => JSON.stringify(p.words))).size, 90);
+test('catalog keeps numbered zero-blank puzzles with globally unique answers and scattered clue cells', () => {
+  assert.ok(puzzles.length >= 7);
+  assert.deepEqual(puzzles.map((p) => p.number), Array.from({ length: puzzles.length }, (_, i) => i + 1));
+  assert.equal(new Set(puzzles.map((p) => JSON.stringify(p.words))).size, puzzles.length);
+  const answers = puzzles.flatMap((puzzle) => puzzle.words.map((word) => word.answer));
+  const clues = puzzles.flatMap((puzzle) => puzzle.words.map((word) => word.clue));
+  assert.equal(new Set(answers).size, answers.length, 'answers must not repeat between puzzles');
+  assert.equal(new Set(clues).size, clues.length, 'clues must not repeat between puzzles');
   for (const puzzle of puzzles) {
     assert.equal(puzzle.cols, 10, puzzle.id);
     assert.equal(puzzle.rows, 7, puzzle.id);
@@ -81,4 +85,5 @@ test('source dictionary stays original-looking Russian material and includes sho
   assert.ok(words.filter((word) => [...word.answer].length === 4).length >= 20);
   assert.equal(new Set(words.map((word) => word.answer)).size, words.length);
   for (const word of words) assert.match(word.answer, /^[А-ЯЁ]{4,12}$/u);
+  assert.ok(words.every((word) => word.clue.length >= 18), 'source clues must be editorial rather than terse glosses');
 });

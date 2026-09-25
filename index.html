@@ -2,66 +2,45 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="build-version" content="v6">
+<meta name="build-version" content="v7">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#efeee8">
 <title>Сканворды</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
-<main id="catalog-screen" class="catalog-screen">
-  <header class="catalog-head">
-    <button id="menu-button" class="round-button" aria-label="Меню">☰</button>
-    <h1>Сканворды</h1>
-    <span id="catalog-progress" class="catalog-progress">0 из 90</span>
-  </header>
-  <nav class="tabs" aria-label="Разделы">
-    <button class="tab is-active" data-tab="list">Список</button>
-    <button class="tab" data-tab="stats">Статистика</button>
-  </nav>
-  <section id="list-panel">
-    <div class="filter-row"><label for="category-filter">Категория</label><select id="category-filter"></select></div>
-    <div id="puzzle-catalog" class="puzzle-catalog" aria-label="Список сканвордов"></div>
-  </section>
-  <section id="stats-panel" class="stats-panel" hidden>
-    <div class="stat-card"><strong id="stat-completed">0</strong><span>разгадано</span></div>
-    <div class="stat-card"><strong id="stat-progress">0</strong><span>в процессе</span></div>
-    <div class="stat-card"><strong id="stat-letters">0</strong><span>букв найдено</span></div>
-  </section>
-</main>
-
-<main id="game-screen" class="game-screen" hidden>
+<main id="game-screen" class="game-screen">
   <header class="game-head">
-    <button id="back-button" class="icon-button" aria-label="Назад к списку">‹</button>
-    <div class="game-heading"><h2 id="game-title">№1</h2><span id="game-category"></span></div>
-    <div class="game-tools">
-      <button id="delete-button" class="icon-button" aria-label="Стереть букву">⌫</button>
-      <button id="keyboard-toggle" class="icon-button" aria-label="Открыть клавиатуру">⌨</button>
-      <button id="hint-letter" class="icon-button" aria-label="Открыть букву">?</button>
-      <button id="hint-word" class="icon-button word-hint" aria-label="Открыть слово">сл</button>
-    </div>
+    <button id="back-button" class="icon-button" aria-label="Назад">‹</button>
+    <button id="menu-button" class="icon-button" aria-label="Каталог">☷</button>
+    <button id="layout-button" class="icon-button" aria-label="Вид сетки">⌗</button>
+    <button id="theme-button" class="icon-button" aria-label="Тема">☾</button>
+    <span class="head-space" aria-hidden="true"></span>
+    <button id="hints-button" class="hints-button">Подсказки</button>
   </header>
   <section class="board-area"><div id="scanword-grid" class="scanword-grid" role="grid" aria-label="Сетка сканворда"></div></section>
-  <section class="play-panel">
-    <div class="active-clue">
-      <b id="direction-badge">→</b>
-      <span id="active-length"></span>
-      <strong id="puzzle-percent">0%</strong>
-      <button id="hint-extras" aria-label="Убрать лишние буквы">− лишние</button>
-      <output id="feedback" class="feedback" aria-live="polite"></output>
-    </div>
-    <div id="letter-tiles" class="letter-tiles" aria-label="Буквы"></div>
+  <section class="clue-bar">
+    <button id="previous-word" aria-label="Предыдущее слово">‹</button>
+    <strong id="current-clue"></strong>
+    <button id="next-word" aria-label="Следующее слово">›</button>
   </section>
+  <section id="letter-tiles" class="letter-tiles" aria-label="Буквы"></section>
+  <footer class="game-foot">
+    <span id="puzzle-label">№1 · v7</span><span class="progress"><i id="progress-bar"></i></span>
+    <button id="delete-button" aria-label="Стереть букву">⌫</button><button id="keyboard-toggle" aria-label="Открыть клавиатуру">⌨</button>
+  </footer>
   <input id="native-input" class="native-input" inputmode="text" autocomplete="off" aria-label="Системная клавиатура">
 </main>
 
-<aside id="drawer" class="drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-menu" class="round-button">×</button><h2>Сканворды</h2><p>90 авторских плотных сеток для короткой разминки.</p><button id="drawer-list">К списку</button><button id="reset-progress">Сбросить прогресс</button><small>Версия 6</small></div></aside>
+<aside id="drawer" class="drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-menu" class="close-button" aria-label="Закрыть">×</button><h1>Сканворды</h1><p>Семь авторских сеток. Ни один ответ не повторяется.</p><div id="puzzle-list" class="puzzle-list"></div><small>Версия 7</small></div></aside>
+<aside id="hints-sheet" class="drawer hints-drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-hints" class="close-button" aria-label="Закрыть">×</button><h2>Подсказки</h2><button id="hint-letter">Открыть одну букву</button><button id="hint-word">Открыть всё слово</button><button id="hint-extras">Убрать лишние буквы</button></div></aside>
+<output id="feedback" class="feedback" aria-live="polite"></output>
 <canvas id="confetti"></canvas>
-<div id="complete-dialog" class="complete-dialog" hidden><div><b>Сканворд разгадан! 🎉</b><span>Отличная работа</span><button id="next-button">Следующий</button><button id="catalog-button">К списку</button></div></div>
-<script src="data/words.js?v=6"></script>
-<script src="data/puzzles.js?v=6"></script>
-<script src="js/generator.js?v=6"></script>
-<script src="js/app.js?v=6"></script>
+<div id="complete-dialog" class="complete-dialog" hidden><div><b>Сканворд разгадан! 🎉</b><span>Точно и внимательно</span><button id="next-button">Следующий</button><button id="catalog-button">Выбрать другой</button></div></div>
+<script src="data/words.js?v=7"></script>
+<script src="data/puzzles.js?v=7"></script>
+<script src="js/generator.js?v=7"></script>
+<script src="js/app.js?v=7"></script>
 </body>
 </html>

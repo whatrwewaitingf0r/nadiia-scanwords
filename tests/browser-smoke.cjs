@@ -4,14 +4,14 @@ const assert = require('node:assert/strict');
 const { chromium } = require('/opt/homebrew/lib/node_modules/@browserbasehq/browse-cli/node_modules/playwright');
 
 const baseUrl = process.argv[2] || `file://${path.join(__dirname, '..', 'index.html')}`;
-const output = path.join(__dirname, '..', 'output', 'mobile-v6');
+const output = path.join(__dirname, '..', 'output', 'v7-responsive');
 fs.mkdirSync(output, { recursive: true });
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
   const scenarios = [
-    { name: 'iphone-se', width: 375, height: 667, visibleCols: 10, visibleRows: 7 },
-    { name: 'ipad-landscape', width: 1366, height: 1024, visibleCols: 10, visibleRows: 7 },
+    { name: 'iphone', width: 390, height: 844 },
+    { name: 'tablet', width: 820, height: 1180 },
   ];
 
   for (const scenario of scenarios) {
@@ -21,76 +21,80 @@ fs.mkdirSync(output, { recursive: true });
     page.on('pageerror', (error) => errors.push(String(error)));
     page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
-    await page.waitForSelector('.puzzle-card');
-    assert.equal(await page.locator('.puzzle-card').count(), 90);
-    await page.screenshot({ path: path.join(output, `${scenario.name}-catalog.png`), fullPage: true });
-
-    await page.locator('.puzzle-card').first().click();
     await page.waitForSelector('.grid-cell.clue');
-    const stateBefore = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
-    assert.equal(stateBefore.mode, 'playing');
-    assert.equal(stateBefore.grid.cols, scenario.visibleCols);
-    assert.equal(stateBefore.grid.rows, scenario.visibleRows);
-    assert.equal(stateBefore.grid.occupied, 70);
+
+    const initial = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
+    assert.equal(initial.mode, 'playing');
+    assert.equal(initial.version, 'v7');
+    assert.deepEqual(initial.grid, { cols: 10, rows: 7, occupied: 70 });
     assert.equal(await page.locator('.grid-cell').count(), 70);
-    const expectedClues = await page.evaluate(() => window.SCANWORD_PUZZLES[0].words.length);
-    assert.equal(await page.locator('.grid-cell.clue').count(), expectedClues);
-    assert.equal(await page.locator('.grid-cell.answer').count(), 70 - expectedClues);
-    assert.equal(await page.locator('.grid-cell.blank').count(), 0);
-    const activeLength = await page.evaluate(() => window.SCANWORD_PUZZLES[0].words[0].answer.length);
-    assert.equal(await page.locator('.grid-cell.answer.is-active').count(), activeLength);
+    assert.equal(await page.locator('.letter-tile').count(), 20);
+    assert.equal(await page.locator('.game-head > button').count(), 5);
+    assert.equal(await page.locator('#current-clue').textContent(), initial.active.clue);
 
     const sizing = await page.evaluate(() => {
       const cell = document.querySelector('.grid-cell.answer').getBoundingClientRect();
-      const dock = document.querySelector('.play-panel').getBoundingClientRect();
       const board = document.querySelector('.scanword-grid').getBoundingClientRect();
+      const areaElement = document.querySelector('.board-area');
+      const area = areaElement.getBoundingClientRect();
+      const clue = document.querySelector('.clue-bar').getBoundingClientRect();
       const header = document.querySelector('.game-head').getBoundingClientRect();
-      return { cellWidth: cell.width, cellHeight: cell.height, dockBottom: dock.bottom, boardBottom: board.bottom, boardTop: board.top, headerBottom: header.bottom, dockTop: dock.top, boardWidth: board.width, innerWidth, innerHeight };
+      const tiles = document.querySelector('.letter-tiles').getBoundingClientRect();
+      const foot = document.querySelector('.game-foot').getBoundingClientRect();
+      const tileRows = [...new Set([...document.querySelectorAll('.letter-tile')].map((tile) => Math.round(tile.getBoundingClientRect().top)))];
+      const availableWidth = areaElement.clientWidth;
+      const availableHeight = Math.max(7 * 24, innerHeight - header.height - clue.height - tiles.height - foot.height);
+      return { cellWidth: cell.width, cellHeight: cell.height, boardBottom: board.bottom, areaBottom: area.bottom, clueTop: clue.top, headerBottom: header.bottom, areaTop: area.top, boardWidth: board.width, clueWidth: clue.width, innerWidth, innerHeight, expectedCell: Math.floor(Math.min(availableWidth / 10, availableHeight / 7)), tileRows: tileRows.length };
     });
     assert.ok(Math.abs(sizing.cellWidth - sizing.cellHeight) < 0.1, JSON.stringify(sizing));
-    assert.ok(sizing.cellWidth >= 37, JSON.stringify(sizing));
+    assert.ok(Math.abs(sizing.cellWidth - sizing.expectedCell) <= 1, JSON.stringify(sizing));
+    assert.ok(Math.abs(sizing.areaBottom - sizing.clueTop) < 1, `beige gap before clue bar: ${JSON.stringify(sizing)}`);
+    assert.ok(sizing.areaTop - sizing.headerBottom < 2, `gap below thin header: ${JSON.stringify(sizing)}`);
+    assert.equal(sizing.tileRows, 2);
     assert.ok(sizing.boardWidth <= sizing.innerWidth + 1, JSON.stringify(sizing));
-    assert.ok(sizing.dockBottom <= sizing.innerHeight + 1, JSON.stringify(sizing));
-    assert.ok(sizing.boardBottom <= sizing.dockTop + 1, JSON.stringify(sizing));
-    assert.ok(sizing.boardTop - sizing.headerBottom < 2, `playfield left unused height: ${JSON.stringify(sizing)}`);
+    if (scenario.name === 'tablet') assert.ok(Math.abs(sizing.boardWidth - sizing.clueWidth) < 12, JSON.stringify(sizing));
+    await page.screenshot({ path: path.join(output, `${scenario.name}-light.png`), fullPage: false });
 
-    const tileCount = await page.locator('.letter-tile').count();
-    assert.equal(tileCount, 20);
     await page.locator('.letter-tile').first().click();
-    const stateAfter = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
-    assert.equal(stateAfter.filledCells, stateBefore.filledCells + 1);
-    await page.locator('#hint-extras').click();
-    assert.equal(await page.locator('.letter-tile').count(), activeLength);
+    const afterLetter = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
+    assert.equal(afterLetter.filledCells, initial.filledCells + 1);
 
-    const leftWord = await page.evaluate(() => window.SCANWORD_PUZZLES[0].words.find((word) => word.direction === 'left').id);
-    const downWord = await page.evaluate(() => window.SCANWORD_PUZZLES[0].words.find((word) => word.direction === 'down').id);
-    await page.locator(`.grid-cell.clue[data-word-id="${leftWord}"]`).click();
-    assert.equal(await page.locator('#direction-badge').textContent(), '←');
-    await page.locator(`.grid-cell.clue[data-word-id="${downWord}"]`).click();
-    assert.equal(await page.locator('#direction-badge').textContent(), '↓');
+    await page.locator('#hints-button').click();
+    await page.locator('#hint-extras').click();
+    assert.equal(await page.locator('.letter-tile').count(), 20, 'hint must preserve the two complete tile rows');
+    assert.ok(await page.locator('.letter-tile:disabled').count() > 0);
+
+    const directions = await page.evaluate(() => Object.fromEntries(['left','down','across'].map((direction) => [direction, window.SCANWORD_PUZZLES[0].words.find((word) => word.direction === direction).id])));
+    for (const [direction, id] of Object.entries(directions)) {
+      await page.locator(`.grid-cell.clue[data-word-id="${id}"]`).click();
+      const text = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
+      assert.equal(text.active.direction, direction === 'left' ? '←' : direction === 'down' ? '↓' : '→');
+    }
+
+    await page.locator('#theme-button').click();
+    assert.ok(await page.locator('body').evaluate((body) => body.classList.contains('theme-dark')));
+    await page.locator('#menu-button').click();
+    assert.equal(await page.locator('#puzzle-list button').count(), 7);
+    await page.locator('#close-menu').click();
     await page.screenshot({ path: path.join(output, `${scenario.name}-game.png`), fullPage: false });
 
-    const stored = await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v6'));
+    const stored = await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v7'));
     assert.ok(stored && stored.includes('scanword-001'));
     await page.reload({ waitUntil: 'domcontentloaded' });
-    await page.locator('.puzzle-card').first().click();
-    const restoredState = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
-    assert.ok(restoredState.filledCells >= 1, 'entered letters should survive reload');
+    assert.ok(JSON.parse(await page.evaluate(() => window.render_game_to_text())).filledCells >= 1);
+
     const clueCount = await page.locator('.grid-cell.clue').count();
     for (let index = 0; index < clueCount; index += 1) {
       await page.locator('.grid-cell.clue').nth(index).click();
+      await page.locator('#hints-button').click();
       await page.locator('#hint-word').click();
     }
     await page.waitForSelector('#complete-dialog:not([hidden])');
-    const completedState = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
-    assert.equal(completedState.complete, true);
-    assert.equal(JSON.parse(await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v6')))['scanword-001'].completed, true);
+    assert.equal(JSON.parse(await page.evaluate(() => window.render_game_to_text())).complete, true);
+    assert.equal(JSON.parse(await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v7')))['scanword-001'].completed, true);
     assert.deepEqual(errors, []);
     await context.close();
   }
   await browser.close();
-  console.log('Browser smoke: packed 10×7 playfield passed on iPhone SE and iPad landscape.');
-})().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+  console.log('Browser smoke: v7 photo composition passed on iPhone and tablet portrait.');
+})().catch((error) => { console.error(error); process.exitCode = 1; });
