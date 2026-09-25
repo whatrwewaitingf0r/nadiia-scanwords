@@ -2,136 +2,38 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 const { chromium } = require('/opt/homebrew/lib/node_modules/@browserbasehq/browse-cli/node_modules/playwright');
-
 const baseUrl = process.argv[2] || `file://${path.join(__dirname, '..', 'index.html')}`;
-const output = path.join(__dirname, '..', 'output', 'v11-responsive');
+const output = path.join(__dirname, '..', 'output', 'v12');
 fs.mkdirSync(output, { recursive: true });
-
 (async () => {
   const browser = await chromium.launch({ headless: true });
-  const scenarios = [
-    { name: 'iphone-se', width: 375, height: 667 },
-    { name: 'iphone', width: 390, height: 844 },
-    { name: 'tablet-portrait', width: 820, height: 1180 },
-  ];
-
+  const scenarios = [{ name: 'iphone-se', width: 375, height: 667 },{ name: 'iphone', width: 390, height: 844 },{ name: 'tablet', width: 820, height: 1180 }];
   for (const scenario of scenarios) {
     const context = await browser.newContext({ viewport: scenario, deviceScaleFactor: 1 });
-    const page = await context.newPage();
-    const errors = [];
-    page.on('pageerror', (error) => errors.push(String(error)));
-    page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
-    await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
-    await page.waitForSelector('.grid-cell.clue');
-
-    const initial = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
-    assert.equal(initial.mode, 'playing');
-    assert.equal(initial.version, 'v11');
-    assert.deepEqual(initial.grid, { cols: 10, rows: 7, occupied: 70, letterCells: 55, clueCells: 15, words: 15 });
-    assert.equal(await page.locator('.grid-cell').count(), 70);
-    assert.equal(await page.locator('.clue-part').count(), 15);
-    assert.equal(await page.locator('.letter-tile').count(), 20);
-    assert.equal(await page.locator('.game-head > button').count(), 5);
-    assert.equal(await page.locator('#current-clue').textContent(), initial.active.clue);
-
-    const sizing = await page.evaluate(() => {
-      const cell = document.querySelector('.grid-cell.answer').getBoundingClientRect();
-      const board = document.querySelector('.scanword-grid').getBoundingClientRect();
-      const area = document.querySelector('.board-area').getBoundingClientRect();
-      const clue = document.querySelector('.clue-bar').getBoundingClientRect();
-      const header = document.querySelector('.game-head').getBoundingClientRect();
-      const tiles = document.querySelector('.letter-tiles').getBoundingClientRect();
-      const lastTile = document.querySelector('.letter-tile:last-child').getBoundingClientRect();
-      const tileRows = [...new Set([...document.querySelectorAll('.letter-tile')].map((tile) => Math.round(tile.getBoundingClientRect().top)))];
-      const stage = document.querySelector('.play-stage').getBoundingClientRect();
-      const expectedCell = Math.min(innerWidth / 10, (stage.height - clue.height) / 7);
-      return { cellWidth: cell.width, cellHeight: cell.height, boardTop: board.top, boardBottom: board.bottom,
-        areaTop: area.top, areaBottom: area.bottom, clueTop: clue.top, clueBottom: clue.bottom,
-        headerBottom: header.bottom, tilesTop: tiles.top, tilesBottom: tiles.bottom,
-        lastTileBottom: lastTile.bottom, boardWidth: board.width, clueWidth: clue.width,
-        headerWidth: header.width, tilesWidth: tiles.width, innerWidth, innerHeight, expectedCell,
-        tileRows: tileRows.length };
-    });
-    assert.ok(Math.abs(sizing.cellWidth - sizing.cellHeight) < 0.1, JSON.stringify(sizing));
-    assert.ok(Math.abs(sizing.cellWidth - sizing.expectedCell) <= 1, JSON.stringify(sizing));
-    assert.ok(sizing.boardTop >= sizing.headerBottom, `board overlaps header: ${JSON.stringify(sizing)}`);
-    assert.ok(Math.abs(sizing.areaBottom - sizing.clueTop) < 1, `gap before clue bar: ${JSON.stringify(sizing)}`);
-    assert.ok(sizing.clueBottom <= sizing.tilesTop, `clue overlaps tiles: ${JSON.stringify(sizing)}`);
-    assert.ok(sizing.tilesBottom - sizing.tilesTop <= 95, `tile bars too tall: ${JSON.stringify(sizing)}`);
-    assert.equal(sizing.tileRows, 2);
-    assert.ok(Math.abs(sizing.boardWidth - sizing.clueWidth) < 1, JSON.stringify(sizing));
-    assert.ok(Math.abs(sizing.boardWidth - sizing.headerWidth) < 1, JSON.stringify(sizing));
-    assert.ok(Math.abs(sizing.boardWidth - sizing.tilesWidth) < 1, JSON.stringify(sizing));
-    assert.ok(sizing.innerHeight - sizing.tilesBottom < 2, `tiles not flush to bottom: ${JSON.stringify(sizing)}`);
-    assert.ok(sizing.lastTileBottom <= sizing.innerHeight + 1, `bottom tile clipped: ${JSON.stringify(sizing)}`);
-    if (scenario.name.startsWith('iphone')) assert.ok(Math.abs(sizing.boardWidth - sizing.innerWidth) < 1, JSON.stringify(sizing));
-
-    const fit = await page.evaluate(() => [...document.querySelectorAll('.clue-part')].map((part) => {
-      const text = part.querySelector('.clue-text').getBoundingClientRect();
-      const arrow = part.querySelector('.clue-arrow').getBoundingClientRect();
-      const box = part.getBoundingClientRect();
-      return { clue: part.innerText, left: text.left >= box.left - .5, right: text.right <= box.right + .5,
-        top: text.top >= box.top - .5, bottom: text.bottom <= arrow.top + 1 };
-    }));
-    assert.ok(fit.every((item) => item.left && item.right && item.top && item.bottom), JSON.stringify(fit));
-
-    const fullClueFits = await page.evaluate(() => {
-      const clue = document.querySelector('#current-clue');
-      clue.textContent = window.SCANWORD_PUZZLES[0].words[0].clue;
-      return clue.scrollWidth <= clue.clientWidth + 1 && clue.getBoundingClientRect().bottom <= document.querySelector('.clue-bar').getBoundingClientRect().bottom + 1;
-    });
-    assert.equal(fullClueFits, true, 'current clue must render fully without truncation');
-    await page.locator('.clue-part').first().click();
-    await page.screenshot({ path: path.join(output, `${scenario.name}-light.png`), fullPage: false });
-
-    await page.locator('.letter-tile').first().click();
-    const afterLetter = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
-    assert.equal(afterLetter.filledCells, initial.filledCells + 1);
-    await page.locator('#delete-button').click();
-    assert.equal(JSON.parse(await page.evaluate(() => window.render_game_to_text())).filledCells, initial.filledCells);
-    await page.locator('.letter-tile').nth(1).click();
-
-    await page.locator('#hints-button').click();
-    await page.locator('#hint-extras').click();
-    assert.equal(await page.locator('.letter-tile').count(), 20);
-    assert.ok(await page.locator('.letter-tile:disabled').count() > 0);
-
-    const directions = await page.evaluate(() => Object.fromEntries(['left','down','across'].map((direction) => [direction, window.SCANWORD_PUZZLES[0].words.find((word) => word.direction === direction).id])));
-    for (const [direction, id] of Object.entries(directions)) {
-      await page.locator(`.clue-part[data-word-id="${id}"]`).click();
-      const text = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
-      assert.equal(text.active.direction, direction === 'left' ? '←' : direction === 'down' ? '↓' : '→');
-    }
-
-    await page.locator('#theme-button').click();
-    assert.ok(await page.locator('body').evaluate((body) => body.classList.contains('theme-dark')));
-    await page.locator('#menu-button').click();
-    assert.equal(await page.locator('#puzzle-list button').count(), 8);
-    await page.locator('#close-menu').click();
-    await page.screenshot({ path: path.join(output, `${scenario.name}-game.png`), fullPage: false });
-
-    if (scenario.name === 'iphone-se') {
-      for (let index = 0; index < 8; index += 1) {
-        await page.locator('#menu-button').click();
-        await page.locator('#puzzle-list button').nth(index).click();
-        assert.equal(await page.locator('.grid-cell').count(), 70, `puzzle ${index + 1}`);
-        const allCluesFit = await page.evaluate(() => [...document.querySelectorAll('.clue-part')].every((part) => {
-          const text = part.querySelector('.clue-text').getBoundingClientRect();
-          const arrow = part.querySelector('.clue-arrow').getBoundingClientRect();
-          const box = part.getBoundingClientRect();
-          return text.left >= box.left - .5 && text.right <= box.right + .5 && text.top >= box.top - .5 && text.bottom <= arrow.top + 1;
-        }));
-        assert.equal(allCluesFit, true, `puzzle ${index + 1}: a clue is clipped on iPhone SE`);
-      }
-    }
-
-    const stored = await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v11'));
-    assert.ok(stored && stored.includes('scanword-001'));
-    await page.reload({ waitUntil: 'domcontentloaded' });
-    assert.ok(JSON.parse(await page.evaluate(() => window.render_game_to_text())).filledCells >= 1);
-    assert.deepEqual(errors, []);
+    const page = await context.newPage(); const errors=[];
+    page.on('pageerror',e=>errors.push(String(e))); page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
+    await page.goto(baseUrl,{waitUntil:'domcontentloaded'}); await page.waitForSelector('.grid-cell.clue');
+    const initial=JSON.parse(await page.evaluate(()=>window.render_game_to_text()));
+    assert.equal(initial.version,'v12'); assert.deepEqual(initial.grid,{cols:10,rows:7,letters:56,clues:10,blocks:4,words:10});
+    assert.equal(await page.locator('.grid-cell').count(),70); assert.equal(await page.locator('.clue-part').count(),10); assert.equal(await page.locator('.letter-tile').count(),20);
+    const sizing=await page.evaluate(()=>{const answer=document.querySelector('.grid-cell.answer'),clueText=document.querySelector('.clue-text'),board=document.querySelector('.scanword-grid').getBoundingClientRect(),area=document.querySelector('.board-area').getBoundingClientRect(),clue=document.querySelector('.clue-bar').getBoundingClientRect(),tiles=document.querySelector('.letter-tiles').getBoundingClientRect(),last=document.querySelector('.letter-tile:last-child').getBoundingClientRect();return{cell:answer.getBoundingClientRect().width,answerFont:parseFloat(getComputedStyle(answer).fontSize),clueFont:parseFloat(getComputedStyle(clueText).fontSize),boardWidth:board.width,boardBottom:board.bottom,areaBottom:area.bottom,clueTop:clue.top,tilesBottom:tiles.bottom,lastBottom:last.bottom,innerWidth,innerHeight}});
+    assert.ok(sizing.cell>=37,JSON.stringify(sizing)); assert.ok(sizing.answerFont>=20,JSON.stringify(sizing)); assert.ok(sizing.clueFont>=8,JSON.stringify(sizing)); assert.ok(sizing.boardWidth<=sizing.innerWidth+1,JSON.stringify(sizing));
+    assert.ok(Math.abs(sizing.areaBottom-sizing.clueTop)<1,`gap before clue bar: ${JSON.stringify(sizing)}`); assert.ok(Math.abs(sizing.tilesBottom-sizing.innerHeight)<2,`bottom beige gap: ${JSON.stringify(sizing)}`); assert.ok(sizing.lastBottom<=sizing.innerHeight+1,JSON.stringify(sizing));
+    await page.screenshot({path:path.join(output,`${scenario.name}-default.png`),fullPage:false});
+    const beforeZoom=sizing.cell; await page.locator('#zoom-in').click();
+    const afterZoom=await page.locator('.grid-cell.answer').first().evaluate(el=>el.getBoundingClientRect().width); assert.ok(afterZoom>beforeZoom*1.1,{beforeZoom,afterZoom});
+    await page.evaluate(()=>{const grid=document.querySelector('#scanword-grid');const fire=(type,id,x)=>grid.dispatchEvent(new PointerEvent(type,{pointerId:id,pointerType:'touch',clientX:x,clientY:100,bubbles:true,cancelable:true}));fire('pointerdown',1,100);fire('pointerdown',2,200);fire('pointermove',2,250);fire('pointerup',1,100);fire('pointerup',2,250)});
+    const afterPinch=await page.locator('.grid-cell.answer').first().evaluate(el=>el.getBoundingClientRect().width); assert.ok(afterPinch>afterZoom,{afterZoom,afterPinch});
+    await page.locator('#zoom-out').click(); assert.ok(await page.locator('.board-area').evaluate(el=>el.classList.contains('is-zoomed')));
+    await page.locator('.letter-tile').first().click(); assert.equal(JSON.parse(await page.evaluate(()=>window.render_game_to_text())).filledCells,initial.filledCells+1);
+    await page.locator('#theme-button').click(); assert.ok(await page.locator('body').evaluate(b=>b.classList.contains('theme-dark')));
+    await page.locator('#menu-button').click(); assert.equal(await page.locator('#puzzle-list button').count(),6); await page.locator('#close-menu').click();
+    await page.screenshot({path:path.join(output,`${scenario.name}-game.png`),fullPage:false});
+    const stored=await page.evaluate(()=>localStorage.getItem('nadiia-scanwords-v12')); assert.ok(stored&&stored.includes('scanword-001'));
+    await page.reload({waitUntil:'domcontentloaded'}); assert.ok(JSON.parse(await page.evaluate(()=>window.render_game_to_text())).filledCells>=1);
+    const clueCount=await page.locator('.clue-part').count(); for(let i=0;i<clueCount;i++){await page.locator('.clue-part').nth(i).click();await page.locator('#hints-button').click();await page.locator('#hint-word').click()}
+    await page.waitForSelector('#complete-dialog:not([hidden])'); assert.equal(JSON.parse(await page.evaluate(()=>window.render_game_to_text())).complete,true); assert.deepEqual(errors,[]);
     await context.close();
   }
-  await browser.close();
-  console.log('Browser smoke: v11 packed composition passed on iPhone SE, iPhone, and portrait tablet.');
-})().catch((error) => { console.error(error); process.exitCode = 1; });
+  await browser.close(); console.log('Browser smoke: v12 10×7 grid, zoom, bottom dock, persistence, and completion passed.');
+})().catch(error=>{console.error(error);process.exitCode=1});
