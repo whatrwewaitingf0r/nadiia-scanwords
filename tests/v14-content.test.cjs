@@ -7,7 +7,7 @@ const root = path.join(__dirname, '..');
 const puzzles = JSON.parse(fs.readFileSync(path.join(root, 'data/puzzles.json'), 'utf8'));
 const steps = { across: [0, 1], left: [0, -1], down: [1, 0], up: [-1, 0] };
 
-test('v17 keeps six fully described landscape boards with horizontal and vertical answers', () => {
+test('v18 keeps six fully described landscape boards with horizontal and vertical answers', () => {
   assert.equal(puzzles.length, 56);
   const seenAnswers = new Set();
   const seenClues = new Set();
@@ -64,18 +64,18 @@ test('v17 keeps six fully described landscape boards with horizontal and vertica
   }
 });
 
-test('v17 is published without changing the v13 sizing geometry', () => {
+test('v18 is published without changing the v13 sizing geometry', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const css = fs.readFileSync(path.join(root, 'styles.css'), 'utf8');
   const app = fs.readFileSync(path.join(root, 'js/app.js'), 'utf8');
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.webmanifest'), 'utf8'));
-  assert.match(html, /content="v17"/);
+  assert.match(html, /content="v18"/);
   assert.doesNotMatch(html, /\?v=13/);
-  assert.match(html, /styles\.css\?v=17/);
-  assert.match(html, /data\/puzzles\.js\?v=17/);
-  assert.match(html, /js\/app\.js\?v=17/);
-  assert.match(app, /sw\.js\?v=17/);
-  assert.equal(manifest.start_url, './?v=17');
+  assert.match(html, /styles\.css\?v=18/);
+  assert.match(html, /data\/puzzles\.js\?v=18/);
+  assert.match(html, /js\/app\.js\?v=18/);
+  assert.match(app, /sw\.js\?v=18/);
+  assert.equal(manifest.start_url, './?v=18');
   assert.match(css, /--board-cols:\s*10/);
   assert.match(css, /--board-rows:\s*7/);
   assert.match(css, /--cell-h:/);
