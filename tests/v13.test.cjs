@@ -4,9 +4,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const read = name => fs.readFileSync(path.join(__dirname, '..', name), 'utf8');
 
-test('v14 gives all vertical slack to the board, not a keyboard well', () => {
+test('v15 gives all vertical slack to the board, not a keyboard well', () => {
   const html = read('index.html'), css = read('styles.css'), app = read('js/app.js');
-  assert.match(html, /content="v14"/);
+  assert.match(html, /content="v15"/);
   assert.doesNotMatch(html, /keyboard-well/);
   assert.ok(html.indexOf('class="clue-bar"') < html.indexOf('id="letter-tiles"'));
   assert.ok(html.indexOf('id="letter-tiles"') < html.indexOf('class="game-foot"'));

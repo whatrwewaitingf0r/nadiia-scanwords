@@ -12,11 +12,11 @@
         "id": "w1",
         "answer": "КОПЬЁ",
         "clue": "Острое древко",
-        "row": 0,
+        "row": 4,
         "col": 3,
         "direction": "across",
         "clueCell": {
-          "row": 0,
+          "row": 4,
           "col": 2
         },
         "arrow": "→"
@@ -25,77 +25,77 @@
         "id": "w2",
         "answer": "ГЛИНА",
         "clue": "Лепят горшки",
-        "row": 4,
-        "col": 1,
-        "direction": "up",
+        "row": 2,
+        "col": 8,
+        "direction": "down",
         "clueCell": {
-          "row": 5,
-          "col": 1
+          "row": 1,
+          "col": 8
         },
-        "arrow": "↑"
+        "arrow": "↓"
       },
       {
         "id": "w3",
         "answer": "ФОНАРЬ",
         "clue": "Светит на улице",
         "row": 5,
-        "col": 8,
-        "direction": "up",
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 6,
-          "col": 8
+          "row": 5,
+          "col": 1
         },
-        "arrow": "↑"
+        "arrow": "→"
       },
       {
         "id": "w4",
         "answer": "РАДУГА",
         "clue": "Дуга после дождя",
-        "row": 5,
-        "col": 0,
-        "direction": "up",
+        "row": 3,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 6,
-          "col": 0
+          "row": 3,
+          "col": 1
         },
-        "arrow": "↑"
+        "arrow": "→"
       },
       {
         "id": "w5",
         "answer": "СИНИЦА",
         "clue": "Жёлтогрудая птица",
-        "row": 5,
-        "col": 9,
-        "direction": "up",
+        "row": 1,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 6,
-          "col": 9
+          "row": 1,
+          "col": 1
         },
-        "arrow": "↑"
+        "arrow": "→"
       },
       {
         "id": "w6",
         "answer": "СЕКРЕТ",
         "clue": "Не для чужих ушей",
-        "row": 6,
-        "col": 6,
-        "direction": "left",
+        "row": 2,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 6,
-          "col": 7
+          "row": 2,
+          "col": 1
         },
-        "arrow": "←"
+        "arrow": "→"
       },
       {
         "id": "w7",
         "answer": "КАИР",
         "clue": "Город на Ниле",
-        "row": 1,
-        "col": 5,
+        "row": 0,
+        "col": 6,
         "direction": "across",
         "clueCell": {
-          "row": 1,
-          "col": 4
+          "row": 0,
+          "col": 5
         },
         "arrow": "→"
       },
@@ -103,38 +103,38 @@
         "id": "w8",
         "answer": "ЛЕТО",
         "clue": "Время жары",
-        "row": 4,
-        "col": 2,
-        "direction": "up",
+        "row": 0,
+        "col": 1,
+        "direction": "across",
         "clueCell": {
-          "row": 5,
-          "col": 2
+          "row": 0,
+          "col": 0
         },
-        "arrow": "↑"
+        "arrow": "→"
       },
       {
         "id": "w9",
         "answer": "ТОРТ",
         "clue": "Кремовые коржи",
-        "row": 2,
-        "col": 5,
-        "direction": "left",
+        "row": 3,
+        "col": 9,
+        "direction": "down",
         "clueCell": {
           "row": 2,
-          "col": 6
+          "col": 9
         },
-        "arrow": "←"
+        "arrow": "↓"
       },
       {
         "id": "w10",
         "answer": "КРАН",
         "clue": "Поднимает груз",
-        "row": 3,
-        "col": 5,
+        "row": 6,
+        "col": 1,
         "direction": "across",
         "clueCell": {
-          "row": 3,
-          "col": 4
+          "row": 6,
+          "col": 0
         },
         "arrow": "→"
       },
@@ -142,25 +142,25 @@
         "id": "w11",
         "answer": "ГРИБ",
         "clue": "Шляпка на ножке",
-        "row": 5,
-        "col": 6,
-        "direction": "left",
+        "row": 2,
+        "col": 0,
+        "direction": "down",
         "clueCell": {
-          "row": 5,
-          "col": 7
+          "row": 1,
+          "col": 0
         },
-        "arrow": "←"
+        "arrow": "↓"
       },
       {
         "id": "w12",
         "answer": "СКАТ",
         "clue": "Плоская рыба",
-        "row": 4,
-        "col": 4,
+        "row": 6,
+        "col": 6,
         "direction": "across",
         "clueCell": {
-          "row": 4,
-          "col": 3
+          "row": 6,
+          "col": 5
         },
         "arrow": "→"
       }
@@ -168,15 +168,11 @@
     "blocks": [
       {
         "row": 1,
-        "col": 3
+        "col": 9
       },
       {
-        "row": 2,
-        "col": 7
-      },
-      {
-        "row": 3,
-        "col": 3
+        "row": 4,
+        "col": 1
       }
     ]
   },
@@ -193,27 +189,27 @@
         "id": "w1",
         "answer": "ПРЯНИК",
         "clue": "Медовая выпечка",
-        "row": 5,
-        "col": 5,
-        "direction": "left",
+        "row": 3,
+        "col": 3,
+        "direction": "across",
         "clueCell": {
-          "row": 5,
-          "col": 6
+          "row": 3,
+          "col": 2
         },
-        "arrow": "←"
+        "arrow": "→"
       },
       {
         "id": "w2",
         "answer": "АРФА",
         "clue": "Струны и рама",
-        "row": 3,
-        "col": 0,
-        "direction": "up",
+        "row": 6,
+        "col": 1,
+        "direction": "across",
         "clueCell": {
-          "row": 4,
+          "row": 6,
           "col": 0
         },
-        "arrow": "↑"
+        "arrow": "→"
       },
       {
         "id": "w3",
@@ -232,25 +228,25 @@
         "id": "w4",
         "answer": "НОТА",
         "clue": "Знак мелодии",
-        "row": 3,
-        "col": 8,
-        "direction": "down",
+        "row": 0,
+        "col": 1,
+        "direction": "across",
         "clueCell": {
-          "row": 2,
-          "col": 8
+          "row": 0,
+          "col": 0
         },
-        "arrow": "↓"
+        "arrow": "→"
       },
       {
         "id": "w5",
         "answer": "КОРЕНЬ",
         "clue": "Подземная часть",
-        "row": 4,
-        "col": 2,
+        "row": 5,
+        "col": 3,
         "direction": "across",
         "clueCell": {
-          "row": 4,
-          "col": 1
+          "row": 5,
+          "col": 2
         },
         "arrow": "→"
       },
@@ -258,25 +254,25 @@
         "id": "w6",
         "answer": "ТИШИНА",
         "clue": "Ни звука",
-        "row": 3,
-        "col": 5,
-        "direction": "left",
+        "row": 4,
+        "col": 3,
+        "direction": "across",
         "clueCell": {
-          "row": 3,
-          "col": 6
+          "row": 4,
+          "col": 2
         },
-        "arrow": "←"
+        "arrow": "→"
       },
       {
         "id": "w7",
         "answer": "БАЙКАЛ",
         "clue": "Озеро с нерпой",
         "row": 1,
-        "col": 3,
+        "col": 2,
         "direction": "across",
         "clueCell": {
           "row": 1,
-          "col": 2
+          "col": 1
         },
         "arrow": "→"
       },
@@ -285,23 +281,23 @@
         "answer": "РЮКЗАК",
         "clue": "Сумка за спиной",
         "row": 2,
-        "col": 6,
-        "direction": "left",
+        "col": 3,
+        "direction": "across",
         "clueCell": {
           "row": 2,
-          "col": 7
+          "col": 2
         },
-        "arrow": "←"
+        "arrow": "→"
       },
       {
         "id": "w9",
         "answer": "БОРЩ",
         "clue": "Свекольный суп",
-        "row": 0,
+        "row": 6,
         "col": 6,
         "direction": "across",
         "clueCell": {
-          "row": 0,
+          "row": 6,
           "col": 5
         },
         "arrow": "→"
@@ -310,24 +306,24 @@
         "id": "w10",
         "answer": "ЯДРО",
         "clue": "Середина плода",
-        "row": 6,
-        "col": 1,
-        "direction": "across",
+        "row": 2,
+        "col": 0,
+        "direction": "down",
         "clueCell": {
-          "row": 6,
+          "row": 1,
           "col": 0
         },
-        "arrow": "→"
+        "arrow": "↓"
       },
       {
         "id": "w11",
         "answer": "ХРАМ",
         "clue": "Дом молитвы",
-        "row": 6,
+        "row": 0,
         "col": 6,
         "direction": "across",
         "clueCell": {
-          "row": 6,
+          "row": 0,
           "col": 5
         },
         "arrow": "→"
@@ -336,28 +332,20 @@
         "id": "w12",
         "answer": "СОВА",
         "clue": "Ночная птица",
-        "row": 0,
-        "col": 3,
-        "direction": "left",
+        "row": 3,
+        "col": 1,
+        "direction": "down",
         "clueCell": {
-          "row": 0,
-          "col": 4
+          "row": 2,
+          "col": 1
         },
-        "arrow": "←"
+        "arrow": "↓"
       }
     ],
     "blocks": [
       {
         "row": 1,
-        "col": 1
-      },
-      {
-        "row": 3,
-        "col": 7
-      },
-      {
-        "row": 5,
-        "col": 7
+        "col": 8
       }
     ]
   },
@@ -374,71 +362,6 @@
         "id": "w1",
         "answer": "ПРАГА",
         "clue": "Влтава: столица",
-        "row": 4,
-        "col": 4,
-        "direction": "across",
-        "clueCell": {
-          "row": 4,
-          "col": 3
-        },
-        "arrow": "→"
-      },
-      {
-        "id": "w2",
-        "answer": "СОЛНЦЕ",
-        "clue": "Дневное светило",
-        "row": 1,
-        "col": 0,
-        "direction": "down",
-        "clueCell": {
-          "row": 0,
-          "col": 0
-        },
-        "arrow": "↓"
-      },
-      {
-        "id": "w3",
-        "answer": "СНЕГ",
-        "clue": "Белые хлопья",
-        "row": 5,
-        "col": 2,
-        "direction": "up",
-        "clueCell": {
-          "row": 6,
-          "col": 2
-        },
-        "arrow": "↑"
-      },
-      {
-        "id": "w4",
-        "answer": "МАЯК",
-        "clue": "Огонь для судов",
-        "row": 3,
-        "col": 8,
-        "direction": "down",
-        "clueCell": {
-          "row": 2,
-          "col": 8
-        },
-        "arrow": "↓"
-      },
-      {
-        "id": "w5",
-        "answer": "ПЕРО",
-        "clue": "На птичьем крыле",
-        "row": 3,
-        "col": 1,
-        "direction": "down",
-        "clueCell": {
-          "row": 2,
-          "col": 1
-        },
-        "arrow": "↓"
-      },
-      {
-        "id": "w6",
-        "answer": "БРАК",
-        "clue": "Семейный союз",
         "row": 3,
         "col": 4,
         "direction": "across",
@@ -449,9 +372,22 @@
         "arrow": "→"
       },
       {
-        "id": "w7",
-        "answer": "АТЛАС",
-        "clue": "Сборник карт",
+        "id": "w2",
+        "answer": "СОЛНЦЕ",
+        "clue": "Дневное светило",
+        "row": 4,
+        "col": 4,
+        "direction": "across",
+        "clueCell": {
+          "row": 4,
+          "col": 3
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w3",
+        "answer": "СНЕГ",
+        "clue": "Белые хлопья",
         "row": 2,
         "col": 9,
         "direction": "down",
@@ -462,22 +398,9 @@
         "arrow": "↓"
       },
       {
-        "id": "w8",
-        "answer": "ЩУКА",
-        "clue": "Зубастая рыба",
-        "row": 5,
-        "col": 6,
-        "direction": "left",
-        "clueCell": {
-          "row": 5,
-          "col": 7
-        },
-        "arrow": "←"
-      },
-      {
-        "id": "w9",
-        "answer": "БОКС",
-        "clue": "Бой на ринге",
+        "id": "w4",
+        "answer": "МАЯК",
+        "clue": "Огонь для судов",
         "row": 6,
         "col": 6,
         "direction": "across",
@@ -488,15 +411,80 @@
         "arrow": "→"
       },
       {
-        "id": "w10",
-        "answer": "СОЮЗ",
-        "clue": "Вместе ради цели",
+        "id": "w5",
+        "answer": "ПЕРО",
+        "clue": "На птичьем крыле",
+        "row": 6,
+        "col": 1,
+        "direction": "across",
+        "clueCell": {
+          "row": 6,
+          "col": 0
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w6",
+        "answer": "БРАК",
+        "clue": "Семейный союз",
         "row": 2,
+        "col": 0,
+        "direction": "down",
+        "clueCell": {
+          "row": 1,
+          "col": 0
+        },
+        "arrow": "↓"
+      },
+      {
+        "id": "w7",
+        "answer": "АТЛАС",
+        "clue": "Сборник карт",
+        "row": 1,
         "col": 4,
         "direction": "across",
         "clueCell": {
-          "row": 2,
+          "row": 1,
           "col": 3
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w8",
+        "answer": "ЩУКА",
+        "clue": "Зубастая рыба",
+        "row": 0,
+        "col": 1,
+        "direction": "across",
+        "clueCell": {
+          "row": 0,
+          "col": 0
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w9",
+        "answer": "БОКС",
+        "clue": "Бой на ринге",
+        "row": 2,
+        "col": 2,
+        "direction": "down",
+        "clueCell": {
+          "row": 1,
+          "col": 2
+        },
+        "arrow": "↓"
+      },
+      {
+        "id": "w10",
+        "answer": "СОЮЗ",
+        "clue": "Вместе ради цели",
+        "row": 0,
+        "col": 6,
+        "direction": "across",
+        "clueCell": {
+          "row": 0,
+          "col": 5
         },
         "arrow": "→"
       },
@@ -504,11 +492,11 @@
         "id": "w11",
         "answer": "БИНОКЛЬ",
         "clue": "Два окуляра",
-        "row": 1,
+        "row": 2,
         "col": 2,
         "direction": "across",
         "clueCell": {
-          "row": 1,
+          "row": 2,
           "col": 1
         },
         "arrow": "→"
@@ -517,28 +505,28 @@
         "id": "w12",
         "answer": "СОЛОВЕЙ",
         "clue": "Лесной певец",
-        "row": 0,
-        "col": 3,
+        "row": 5,
+        "col": 2,
         "direction": "across",
         "clueCell": {
-          "row": 0,
-          "col": 2
+          "row": 5,
+          "col": 1
         },
         "arrow": "→"
       }
     ],
     "blocks": [
       {
-        "row": 0,
+        "row": 1,
         "col": 1
       },
       {
-        "row": 6,
-        "col": 3
+        "row": 3,
+        "col": 1
       },
       {
-        "row": 6,
-        "col": 4
+        "row": 4,
+        "col": 1
       }
     ]
   },
@@ -555,149 +543,32 @@
         "id": "w1",
         "answer": "ВРАЧ",
         "clue": "Лечит людей",
-        "row": 3,
-        "col": 9,
-        "direction": "down",
+        "row": 6,
+        "col": 6,
+        "direction": "across",
         "clueCell": {
-          "row": 2,
-          "col": 9
+          "row": 6,
+          "col": 5
         },
-        "arrow": "↓"
+        "arrow": "→"
       },
       {
         "id": "w2",
         "answer": "ЕЖОНОК",
         "clue": "Детёныш ежа",
-        "row": 0,
-        "col": 8,
-        "direction": "left",
+        "row": 3,
+        "col": 3,
+        "direction": "across",
         "clueCell": {
-          "row": 0,
-          "col": 9
+          "row": 3,
+          "col": 2
         },
-        "arrow": "←"
+        "arrow": "→"
       },
       {
         "id": "w3",
         "answer": "СТИХ",
         "clue": "Строка поэта",
-        "row": 1,
-        "col": 2,
-        "direction": "down",
-        "clueCell": {
-          "row": 0,
-          "col": 2
-        },
-        "arrow": "↓"
-      },
-      {
-        "id": "w4",
-        "answer": "ОПЕРА",
-        "clue": "Спектакль, где поют",
-        "row": 4,
-        "col": 0,
-        "direction": "up",
-        "clueCell": {
-          "row": 5,
-          "col": 0
-        },
-        "arrow": "↑"
-      },
-      {
-        "id": "w5",
-        "answer": "ЛАПА",
-        "clue": "Нога зверя",
-        "row": 3,
-        "col": 8,
-        "direction": "down",
-        "clueCell": {
-          "row": 2,
-          "col": 8
-        },
-        "arrow": "↓"
-      },
-      {
-        "id": "w6",
-        "answer": "СТУЛ",
-        "clue": "Сиденье со спинкой",
-        "row": 3,
-        "col": 5,
-        "direction": "across",
-        "clueCell": {
-          "row": 3,
-          "col": 4
-        },
-        "arrow": "→"
-      },
-      {
-        "id": "w7",
-        "answer": "ОВОД",
-        "clue": "Кусающая муха",
-        "row": 1,
-        "col": 1,
-        "direction": "down",
-        "clueCell": {
-          "row": 0,
-          "col": 1
-        },
-        "arrow": "↓"
-      },
-      {
-        "id": "w8",
-        "answer": "ЛИФТ",
-        "clue": "Кабина в шахте",
-        "row": 4,
-        "col": 4,
-        "direction": "across",
-        "clueCell": {
-          "row": 4,
-          "col": 3
-        },
-        "arrow": "→"
-      },
-      {
-        "id": "w9",
-        "answer": "КАНТ",
-        "clue": "Узкая кайма",
-        "row": 2,
-        "col": 5,
-        "direction": "left",
-        "clueCell": {
-          "row": 2,
-          "col": 6
-        },
-        "arrow": "←"
-      },
-      {
-        "id": "w10",
-        "answer": "ЛЕСНОЙ",
-        "clue": "Из чащи",
-        "row": 1,
-        "col": 4,
-        "direction": "across",
-        "clueCell": {
-          "row": 1,
-          "col": 3
-        },
-        "arrow": "→"
-      },
-      {
-        "id": "w11",
-        "answer": "МЕТЕЛЬ",
-        "clue": "Ветер со снегом",
-        "row": 5,
-        "col": 6,
-        "direction": "left",
-        "clueCell": {
-          "row": 5,
-          "col": 7
-        },
-        "arrow": "←"
-      },
-      {
-        "id": "w12",
-        "answer": "КЕНГУРУ",
-        "clue": "Сумка и прыжки",
         "row": 6,
         "col": 1,
         "direction": "across",
@@ -706,16 +577,129 @@
           "col": 0
         },
         "arrow": "→"
+      },
+      {
+        "id": "w4",
+        "answer": "ОПЕРА",
+        "clue": "Спектакль, где поют",
+        "row": 2,
+        "col": 4,
+        "direction": "across",
+        "clueCell": {
+          "row": 2,
+          "col": 3
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w5",
+        "answer": "ЛАПА",
+        "clue": "Нога зверя",
+        "row": 2,
+        "col": 0,
+        "direction": "down",
+        "clueCell": {
+          "row": 1,
+          "col": 0
+        },
+        "arrow": "↓"
+      },
+      {
+        "id": "w6",
+        "answer": "СТУЛ",
+        "clue": "Сиденье со спинкой",
+        "row": 2,
+        "col": 9,
+        "direction": "down",
+        "clueCell": {
+          "row": 1,
+          "col": 9
+        },
+        "arrow": "↓"
+      },
+      {
+        "id": "w7",
+        "answer": "ОВОД",
+        "clue": "Кусающая муха",
+        "row": 0,
+        "col": 1,
+        "direction": "across",
+        "clueCell": {
+          "row": 0,
+          "col": 0
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w8",
+        "answer": "ЛИФТ",
+        "clue": "Кабина в шахте",
+        "row": 0,
+        "col": 6,
+        "direction": "across",
+        "clueCell": {
+          "row": 0,
+          "col": 5
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w9",
+        "answer": "КАНТ",
+        "clue": "Узкая кайма",
+        "row": 2,
+        "col": 1,
+        "direction": "down",
+        "clueCell": {
+          "row": 1,
+          "col": 1
+        },
+        "arrow": "↓"
+      },
+      {
+        "id": "w10",
+        "answer": "ЛЕСНОЙ",
+        "clue": "Из чащи",
+        "row": 1,
+        "col": 3,
+        "direction": "across",
+        "clueCell": {
+          "row": 1,
+          "col": 2
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w11",
+        "answer": "МЕТЕЛЬ",
+        "clue": "Ветер со снегом",
+        "row": 5,
+        "col": 3,
+        "direction": "across",
+        "clueCell": {
+          "row": 5,
+          "col": 2
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w12",
+        "answer": "КЕНГУРУ",
+        "clue": "Сумка и прыжки",
+        "row": 4,
+        "col": 3,
+        "direction": "across",
+        "clueCell": {
+          "row": 4,
+          "col": 2
+        },
+        "arrow": "→"
       }
     ],
     "blocks": [
       {
         "row": 2,
-        "col": 7
-      },
-      {
-        "row": 3,
-        "col": 3
+        "col": 2
       }
     ]
   },
@@ -732,51 +716,51 @@
         "id": "w1",
         "answer": "ВАРЕЖКА",
         "clue": "Греет ладонь",
-        "row": 0,
-        "col": 6,
-        "direction": "left",
+        "row": 5,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 0,
-          "col": 7
+          "row": 5,
+          "col": 1
         },
-        "arrow": "←"
+        "arrow": "→"
       },
       {
         "id": "w2",
         "answer": "ШАЛАШ",
         "clue": "Укрытие из веток",
-        "row": 5,
-        "col": 1,
-        "direction": "up",
+        "row": 1,
+        "col": 3,
+        "direction": "across",
         "clueCell": {
-          "row": 6,
-          "col": 1
+          "row": 1,
+          "col": 2
         },
-        "arrow": "↑"
+        "arrow": "→"
       },
       {
         "id": "w3",
         "answer": "ГОГОЛЬ",
         "clue": "Автор «Шинели»",
-        "row": 1,
-        "col": 8,
-        "direction": "down",
+        "row": 2,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 0,
-          "col": 8
+          "row": 2,
+          "col": 1
         },
-        "arrow": "↓"
+        "arrow": "→"
       },
       {
         "id": "w4",
         "answer": "ГОЛУБЬ",
         "clue": "Городская птица",
-        "row": 6,
-        "col": 3,
+        "row": 4,
+        "col": 2,
         "direction": "across",
         "clueCell": {
-          "row": 6,
-          "col": 2
+          "row": 4,
+          "col": 1
         },
         "arrow": "→"
       },
@@ -784,6 +768,71 @@
         "id": "w5",
         "answer": "ТЕНТ",
         "clue": "Плотный навес",
+        "row": 0,
+        "col": 1,
+        "direction": "across",
+        "clueCell": {
+          "row": 0,
+          "col": 0
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w6",
+        "answer": "СЛЕД",
+        "clue": "Отпечаток ноги",
+        "row": 6,
+        "col": 1,
+        "direction": "across",
+        "clueCell": {
+          "row": 6,
+          "col": 0
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w7",
+        "answer": "МЫЛО",
+        "clue": "Пенится в воде",
+        "row": 2,
+        "col": 9,
+        "direction": "down",
+        "clueCell": {
+          "row": 1,
+          "col": 9
+        },
+        "arrow": "↓"
+      },
+      {
+        "id": "w8",
+        "answer": "ЮМОР",
+        "clue": "Чувство смешного",
+        "row": 0,
+        "col": 6,
+        "direction": "across",
+        "clueCell": {
+          "row": 0,
+          "col": 5
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w9",
+        "answer": "ЧАША",
+        "clue": "Круглый сосуд",
+        "row": 2,
+        "col": 8,
+        "direction": "down",
+        "clueCell": {
+          "row": 1,
+          "col": 8
+        },
+        "arrow": "↓"
+      },
+      {
+        "id": "w10",
+        "answer": "ПРУД",
+        "clue": "Малый водоём",
         "row": 2,
         "col": 0,
         "direction": "down",
@@ -794,80 +843,15 @@
         "arrow": "↓"
       },
       {
-        "id": "w6",
-        "answer": "СЛЕД",
-        "clue": "Отпечаток ноги",
-        "row": 2,
-        "col": 2,
-        "direction": "down",
-        "clueCell": {
-          "row": 1,
-          "col": 2
-        },
-        "arrow": "↓"
-      },
-      {
-        "id": "w7",
-        "answer": "МЫЛО",
-        "clue": "Пенится в воде",
-        "row": 2,
-        "col": 5,
-        "direction": "across",
-        "clueCell": {
-          "row": 2,
-          "col": 4
-        },
-        "arrow": "→"
-      },
-      {
-        "id": "w8",
-        "answer": "ЮМОР",
-        "clue": "Чувство смешного",
-        "row": 5,
-        "col": 9,
-        "direction": "up",
-        "clueCell": {
-          "row": 6,
-          "col": 9
-        },
-        "arrow": "↑"
-      },
-      {
-        "id": "w9",
-        "answer": "ЧАША",
-        "clue": "Круглый сосуд",
-        "row": 3,
-        "col": 4,
-        "direction": "across",
-        "clueCell": {
-          "row": 3,
-          "col": 3
-        },
-        "arrow": "→"
-      },
-      {
-        "id": "w10",
-        "answer": "ПРУД",
-        "clue": "Малый водоём",
-        "row": 4,
-        "col": 6,
-        "direction": "left",
-        "clueCell": {
-          "row": 4,
-          "col": 7
-        },
-        "arrow": "←"
-      },
-      {
         "id": "w11",
         "answer": "БИНТ",
         "clue": "Лента для ран",
-        "row": 5,
-        "col": 4,
+        "row": 6,
+        "col": 6,
         "direction": "across",
         "clueCell": {
-          "row": 5,
-          "col": 3
+          "row": 6,
+          "col": 5
         },
         "arrow": "→"
       },
@@ -875,28 +859,20 @@
         "id": "w12",
         "answer": "ГОРНЫЙ",
         "clue": "Из высоких мест",
-        "row": 1,
-        "col": 8,
-        "direction": "left",
+        "row": 3,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 1,
-          "col": 9
+          "row": 3,
+          "col": 1
         },
-        "arrow": "←"
+        "arrow": "→"
       }
     ],
     "blocks": [
       {
-        "row": 0,
-        "col": 9
-      },
-      {
-        "row": 2,
-        "col": 3
-      },
-      {
-        "row": 6,
-        "col": 0
+        "row": 1,
+        "col": 1
       }
     ]
   },
@@ -913,19 +889,6 @@
         "id": "w1",
         "answer": "ВИРУС",
         "clue": "Зараза без клетки",
-        "row": 0,
-        "col": 1,
-        "direction": "across",
-        "clueCell": {
-          "row": 0,
-          "col": 0
-        },
-        "arrow": "→"
-      },
-      {
-        "id": "w2",
-        "answer": "ХЛЕБ",
-        "clue": "Пекут из муки",
         "row": 1,
         "col": 6,
         "direction": "down",
@@ -936,30 +899,43 @@
         "arrow": "↓"
       },
       {
+        "id": "w2",
+        "answer": "ХЛЕБ",
+        "clue": "Пекут из муки",
+        "row": 2,
+        "col": 0,
+        "direction": "down",
+        "clueCell": {
+          "row": 1,
+          "col": 0
+        },
+        "arrow": "↓"
+      },
+      {
         "id": "w3",
         "answer": "МЕТР",
         "clue": "Мера длины",
-        "row": 1,
-        "col": 7,
-        "direction": "down",
+        "row": 3,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 0,
-          "col": 7
+          "row": 3,
+          "col": 1
         },
-        "arrow": "↓"
+        "arrow": "→"
       },
       {
         "id": "w4",
         "answer": "ЖЕМЧУГ",
         "clue": "Дар раковины",
-        "row": 5,
-        "col": 8,
-        "direction": "up",
+        "row": 4,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 6,
-          "col": 8
+          "row": 4,
+          "col": 1
         },
-        "arrow": "↑"
+        "arrow": "→"
       },
       {
         "id": "w5",
@@ -978,11 +954,11 @@
         "id": "w6",
         "answer": "ЗАВОД",
         "clue": "Фабричное место",
-        "row": 1,
+        "row": 0,
         "col": 1,
         "direction": "across",
         "clueCell": {
-          "row": 1,
+          "row": 0,
           "col": 0
         },
         "arrow": "→"
@@ -991,11 +967,11 @@
         "id": "w7",
         "answer": "ЛУНА",
         "clue": "Спутник Земли",
-        "row": 2,
+        "row": 6,
         "col": 1,
         "direction": "across",
         "clueCell": {
-          "row": 2,
+          "row": 6,
           "col": 0
         },
         "arrow": "→"
@@ -1004,25 +980,25 @@
         "id": "w8",
         "answer": "ДВОР",
         "clue": "Участок возле дома",
-        "row": 3,
-        "col": 5,
-        "direction": "down",
+        "row": 5,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 2,
-          "col": 5
+          "row": 5,
+          "col": 1
         },
-        "arrow": "↓"
+        "arrow": "→"
       },
       {
         "id": "w9",
         "answer": "НЕВА",
         "clue": "Река Петербурга",
-        "row": 3,
-        "col": 1,
+        "row": 6,
+        "col": 6,
         "direction": "across",
         "clueCell": {
-          "row": 3,
-          "col": 0
+          "row": 6,
+          "col": 5
         },
         "arrow": "→"
       },
@@ -1030,54 +1006,58 @@
         "id": "w10",
         "answer": "НЕРВ",
         "clue": "Пучок волокон",
-        "row": 4,
-        "col": 2,
-        "direction": "across",
+        "row": 3,
+        "col": 8,
+        "direction": "down",
         "clueCell": {
-          "row": 4,
-          "col": 1
+          "row": 2,
+          "col": 8
         },
-        "arrow": "→"
+        "arrow": "↓"
       },
       {
         "id": "w11",
         "answer": "ЗОНТИК",
         "clue": "Защита от дождя",
-        "row": 5,
-        "col": 6,
-        "direction": "left",
+        "row": 2,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 5,
-          "col": 7
+          "row": 2,
+          "col": 1
         },
-        "arrow": "←"
+        "arrow": "→"
       },
       {
         "id": "w12",
         "answer": "ТРАМВАЙ",
         "clue": "Вагон на рельсах",
-        "row": 6,
-        "col": 6,
-        "direction": "left",
+        "row": 1,
+        "col": 2,
+        "direction": "across",
         "clueCell": {
-          "row": 6,
-          "col": 7
+          "row": 1,
+          "col": 1
         },
-        "arrow": "←"
+        "arrow": "→"
       }
     ],
     "blocks": [
       {
-        "row": 4,
-        "col": 0
+        "row": 0,
+        "col": 7
+      },
+      {
+        "row": 0,
+        "col": 8
+      },
+      {
+        "row": 3,
+        "col": 7
       },
       {
         "row": 5,
-        "col": 0
-      },
-      {
-        "row": 6,
-        "col": 9
+        "col": 7
       }
     ]
   }

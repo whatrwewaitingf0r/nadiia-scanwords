@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const STORE='nadiia-scanwords-v14';
+const STORE='nadiia-scanwords-v15';
 const puzzles=window.SCANWORD_PUZZLES||[];
 const EXTRA=[...'АЕИОУЫЭЮЯБВГДЖЗЙКЛМНПРСТФХЦЧШЩ'];
 const $=selector=>document.querySelector(selector);
@@ -9,10 +9,10 @@ let saved=readSaved(),state=null,toastTimer=0;
 function readSaved(){try{return JSON.parse(localStorage.getItem(STORE)||'{}')}catch{return {}}}
 function persist(){try{localStorage.setItem(STORE,JSON.stringify(saved))}catch{}}
 function key(row,col){return `${row}:${col}`}
-function delta(word){return word.direction==='down'?[1,0]:word.direction==='up'?[-1,0]:word.direction==='left'?[0,-1]:[0,1]}
+function delta(word){return word.direction==='down'?[1,0]:[0,1]}
 function wordCells(word){const [dr,dc]=delta(word);return [...word.answer].map((letter,index)=>({key:key(word.row+dr*index,word.col+dc*index),letter,index}))}
 function solution(puzzle){const map={};puzzle.words.forEach(word=>wordCells(word).forEach(cell=>{map[cell.key]||={letter:cell.letter,wordIds:[]};map[cell.key].wordIds.push(word.id)}));return map}
-function arrowFor(word){return word.arrow||(word.direction==='down'?'↓':word.direction==='up'?'↑':word.direction==='left'?'←':'→')}
+function arrowFor(word){return word.direction==='down'?'↓':'→'}
 function activeWord(){return state.puzzle.words.find(word=>word.id===state.activeWordId)}
 function wordDone(word){return wordCells(word).every(cell=>state.cells[cell.key]===cell.letter)}
 function puzzleDone(){return state&&Object.entries(state.solution).every(([cellKey,value])=>state.cells[cellKey]===value.letter)}
@@ -29,12 +29,15 @@ function resizeBoard(){
  document.documentElement.style.setProperty('--cell-h',`${cellHeight}px`);
  document.documentElement.style.setProperty('--board-cols',cols);
  document.documentElement.style.setProperty('--board-rows',rows);
+ els.grid.style.width=`${cellWidth*cols}px`;
+ els.grid.style.height=`${cellHeight*rows}px`;
 }
 function setZoom(value,announce=true){
  if(!state)return;
  state.zoom=Math.max(1,Math.min(2.2,Math.round(value*100)/100));
  els.board.classList.toggle('is-zoomed',state.zoom>1.01);
  resizeBoard();
+ if(state.zoom<=1.01){els.board.scrollLeft=0;els.board.scrollTop=0}
  if(announce)toast(state.zoom>1.01?`Поле: ${Math.round(state.zoom*100)}%. Можно двигать пальцем.`:'Поле целиком на экране.');
 }
 function openPuzzle(puzzle){const prior=saved[puzzle.id]||{};state={puzzle,solution:solution(puzzle),cells:{...(prior.cells||{})},activeWordId:puzzle.words[0].id,focus:0,solved:new Set(puzzle.words.filter(word=>wordCells(word).every(cell=>prior.cells?.[cell.key]===cell.letter)).map(word=>word.id)),tileOrder:{},extrasMuted:false,zoom:1};els.dialog.hidden=true;els.board.classList.remove('is-zoomed');selectWord(puzzle.words[0].id,true);renderPuzzleList();requestAnimationFrame(resizeBoard)}
@@ -49,24 +52,27 @@ function enter(letter){if(!/^[А-ЯЁ]$/u.test(letter))return;const cells=wordCe
 function erase(){const cells=wordCells(activeWord());let index=state.focus;if(!state.cells[cells[index].key]&&index>0)index-=1;delete state.cells[cells[index].key];state.focus=index;state.solved=new Set(state.puzzle.words.filter(wordDone).map(word=>word.id));saveGame();render()}
 function reveal(){const cells=wordCells(activeWord()),index=cells.findIndex(cell=>state.cells[cell.key]!==cell.letter);if(index<0)return;state.cells[cells[index].key]=cells[index].letter;state.focus=nextEmpty(cells,index+1);afterEdit();toast('Открыта одна буква — без штрафа.')}
 function revealWord(){wordCells(activeWord()).forEach(cell=>{state.cells[cell.key]=cell.letter});afterEdit();toast('Слово открыто — можно идти дальше.')}
-function afterEdit(){const solved=new Set(state.puzzle.words.filter(wordDone).map(word=>word.id));const newly=state.puzzle.words.filter(word=>solved.has(word.id)&&!state.solved.has(word.id));state.solved=solved;saveGame();render();if(newly.length){toast('Верно! Отличное слово ✦');sparkleWord()}if(puzzleDone())setTimeout(finish,220)}
-function sparkleWord(){const box=els.grid.getBoundingClientRect();for(let index=0;index<12;index+=1){const spark=document.createElement('i');spark.className='spark';spark.textContent='✦';spark.style.left=`${box.left+box.width/2}px`;spark.style.top=`${box.top+box.height/2}px`;spark.style.setProperty('--x',`${(Math.random()-.5)*180}px`);spark.style.setProperty('--y',`${(Math.random()-.5)*140}px`);document.body.append(spark);setTimeout(()=>spark.remove(),800)}}
+function afterEdit(){const solved=new Set(state.puzzle.words.filter(wordDone).map(word=>word.id));const newly=state.puzzle.words.filter(word=>solved.has(word.id)&&!state.solved.has(word.id));state.solved=solved;saveGame();render();if(newly.length){toast('Верно! Отличное слово ✦');newly.forEach(launchWordConfetti)}if(puzzleDone())setTimeout(finish,220)}
+const confettiParticles=[];let confettiFrame=0;
+function burstConfetti(x,y,count,power){const canvas=$('#confetti');canvas.style.display='block';for(let i=0;i<count;i++){const angle=Math.random()*Math.PI*2,speed=(2+Math.random()*5)*power;confettiParticles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-2,life:0,max:48+Math.random()*32,size:3+Math.random()*5,hue:Math.random()*360})}if(!confettiFrame){const ctx=canvas.getContext('2d');const draw=()=>{canvas.width=innerWidth;canvas.height=innerHeight;ctx.clearRect(0,0,canvas.width,canvas.height);for(let i=confettiParticles.length-1;i>=0;i--){const p=confettiParticles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.14;p.vx*=.99;p.life++;ctx.globalAlpha=Math.max(0,1-p.life/p.max);ctx.fillStyle=`hsl(${p.hue} 85% 52%)`;ctx.fillRect(p.x,p.y,p.size,p.size*1.55);if(p.life>=p.max)confettiParticles.splice(i,1)}ctx.globalAlpha=1;if(confettiParticles.length)confettiFrame=requestAnimationFrame(draw);else{confettiFrame=0;canvas.style.display='none'}};confettiFrame=requestAnimationFrame(draw)}}
+function launchWordConfetti(word){const cells=wordCells(word),middle=cells[Math.floor(cells.length/2)],node=els.grid.querySelectorAll('.grid-cell')[Number(middle.key.split(':')[0])*state.puzzle.cols+Number(middle.key.split(':')[1])],box=node.getBoundingClientRect();burstConfetti(box.left+box.width/2,box.top+box.height/2,45,1)}
+function launchPuzzleConfetti(){burstConfetti(innerWidth/2,innerHeight*.38,220,1.7)}
 function toast(message){els.feedback.textContent=message;els.feedback.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>els.feedback.classList.remove('show'),1700)}
-function launchConfetti(){const canvas=$('#confetti');canvas.style.display='block';const context=canvas.getContext('2d');canvas.width=innerWidth;canvas.height=innerHeight;const bits=Array.from({length:150},()=>({x:Math.random()*canvas.width,y:-Math.random()*canvas.height*.5,v:2+Math.random()*5,s:3+Math.random()*5,h:Math.random()*360}));let frame=0;(function draw(){context.clearRect(0,0,canvas.width,canvas.height);bits.forEach(bit=>{bit.y+=bit.v;bit.x+=Math.sin((bit.y+bit.h)/28);context.fillStyle=`hsl(${bit.h} 70% 48%)`;context.fillRect(bit.x,bit.y,bit.s,bit.s*1.7)});if(frame++<150)requestAnimationFrame(draw);else{context.clearRect(0,0,canvas.width,canvas.height);canvas.style.display='none'}})()}
-function finish(){if(!els.dialog.hidden)return;saveGame();launchConfetti();els.dialog.hidden=false}
-function render(){renderBoard();renderTiles();const word=activeWord(),total=Object.keys(state.solution).length,done=Object.entries(state.solution).filter(([cellKey,value])=>state.cells[cellKey]===value.letter).length;els.clue.textContent=word.clue;els.label.textContent=`№${state.puzzle.number} · ${Math.round(done/total*100)}% · v14`;els.progress.style.width=`${done/total*100}%`;resizeBoard()}
+function finish(){if(!els.dialog.hidden)return;saveGame();launchPuzzleConfetti();els.dialog.hidden=false}
+function render(){renderBoard();renderTiles();const word=activeWord(),total=Object.keys(state.solution).length,done=Object.entries(state.solution).filter(([cellKey,value])=>state.cells[cellKey]===value.letter).length;els.clue.textContent=word.clue;els.label.textContent=`№${state.puzzle.number} · ${Math.round(done/total*100)}% · v15`;els.progress.style.width=`${done/total*100}%`;resizeBoard()}
 function renderPuzzleList(){els.list.replaceChildren(...puzzles.map(puzzle=>{const button=document.createElement('button');button.classList.toggle('is-active',state?.puzzle.id===puzzle.id);button.textContent=`№${puzzle.number} · ${puzzle.category}${saved[puzzle.id]?.completed?' · готово':''}`;button.onclick=()=>{openPuzzle(puzzle);closeDrawer(els.drawer)};return button}))}
 function openDrawer(drawer){drawer.classList.add('open');drawer.setAttribute('aria-hidden','false')}
 function closeDrawer(drawer){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true')}
 function moveWord(delta){const index=state.puzzle.words.findIndex(word=>word.id===state.activeWordId);selectWord(state.puzzle.words[(index+delta+state.puzzle.words.length)%state.puzzle.words.length].id)}
 $('#previous-word').onclick=()=>moveWord(-1);$('#next-word').onclick=()=>moveWord(1);$('#delete-button').onclick=erase;$('#keyboard-toggle').onclick=()=>{els.input.value='';els.input.focus()};$('#hint-letter').onclick=()=>{reveal();closeDrawer(els.hints)};$('#hint-word').onclick=()=>{revealWord();closeDrawer(els.hints)};$('#hint-extras').onclick=()=>{state.extrasMuted=true;renderTiles();toast('Лишние буквы приглушены.');closeDrawer(els.hints)};$('#menu-button').onclick=()=>openDrawer(els.drawer);$('#hints-button').onclick=()=>openDrawer(els.hints);$('#close-menu').onclick=()=>closeDrawer(els.drawer);$('#close-hints').onclick=()=>closeDrawer(els.hints);[els.drawer,els.hints].forEach(drawer=>drawer.onclick=event=>{if(event.target===drawer)closeDrawer(drawer)});$('#zoom-out').onclick=()=>setZoom(state.zoom-.15);$('#zoom-in').onclick=()=>setZoom(state.zoom+.15);$('#theme-button').onclick=()=>document.body.classList.toggle('theme-dark');$('#back-button').onclick=()=>{const index=puzzles.findIndex(puzzle=>puzzle.id===state.puzzle.id);openPuzzle(puzzles[(index-1+puzzles.length)%puzzles.length])};$('#next-button').onclick=()=>{const index=puzzles.findIndex(puzzle=>puzzle.id===state.puzzle.id);openPuzzle(puzzles[(index+1)%puzzles.length])};$('#catalog-button').onclick=()=>{els.dialog.hidden=true;openDrawer(els.drawer)};els.input.oninput=event=>{const letter=event.target.value.toUpperCase().match(/[А-ЯЁ]/gu)?.at(-1);if(letter)enter(letter);event.target.value=''};document.addEventListener('keydown',event=>{if(!state)return;const pressed=event.key.toUpperCase();if(/^[А-ЯЁ]$/u.test(pressed)){event.preventDefault();enter(pressed)}if(event.key==='Backspace'){event.preventDefault();erase()}if(event.key==='ArrowLeft'){event.preventDefault();state.focus=Math.max(0,state.focus-1);render()}if(event.key==='ArrowRight'){event.preventDefault();state.focus=Math.min(activeWord().answer.length-1,state.focus+1);render()}});addEventListener('resize',resizeBoard);
-const pointers=new Map();let pinchStart=null;
+const pointers=new Map();let pinchStart=null,panMoved=false;
 function pointerDistance(){const points=[...pointers.values()];return points.length<2?0:Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y)}
-els.grid.addEventListener('pointerdown',event=>{if(event.pointerType!=='touch')return;pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});if(pointers.size===2)pinchStart={distance:pointerDistance(),zoom:state.zoom}});
-els.grid.addEventListener('pointermove',event=>{if(!pointers.has(event.pointerId))return;pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});if(pinchStart&&pointers.size>=2){event.preventDefault();const distance=pointerDistance();if(pinchStart.distance>0)setZoom(pinchStart.zoom*distance/pinchStart.distance,false)}});
+els.grid.addEventListener('pointerdown',event=>{if(event.pointerType!=='touch')return;pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});if(pointers.size===1)panMoved=false;if(pointers.size===2){pinchStart={distance:pointerDistance(),zoom:state.zoom};panMoved=true}});
+els.grid.addEventListener('pointermove',event=>{const previous=pointers.get(event.pointerId);if(!previous)return;pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});if(pinchStart&&pointers.size>=2){event.preventDefault();const distance=pointerDistance();if(pinchStart.distance>0)setZoom(pinchStart.zoom*distance/pinchStart.distance,false)}else if(state.zoom>1.01){const dx=event.clientX-previous.x,dy=event.clientY-previous.y;if(Math.abs(dx)+Math.abs(dy)>1){event.preventDefault();els.board.scrollLeft-=dx;els.board.scrollTop-=dy;panMoved=true}}});
+els.grid.addEventListener('click',event=>{if(panMoved){event.preventDefault();event.stopPropagation();panMoved=false}},true);
 function endPointer(event){pointers.delete(event.pointerId);if(pointers.size<2)pinchStart=null}
 els.grid.addEventListener('pointerup',endPointer);els.grid.addEventListener('pointercancel',endPointer);
 
-window.render_game_to_text=()=>JSON.stringify({mode:els.dialog.hidden?'playing':'complete',version:'v14',puzzle:state.puzzle.number,category:state.puzzle.category,grid:{cols:state.puzzle.cols,rows:state.puzzle.rows,letters:Object.keys(state.solution).length,clues:state.puzzle.words.length,blocks:state.puzzle.blocks.length,words:state.puzzle.words.length},active:{clue:activeWord().clue,direction:arrowFor(activeWord()),length:activeWord().answer.length},filledCells:Object.keys(state.cells).length,totalCells:Object.keys(state.solution).length,complete:puzzleDone()});window.advanceTime=()=>{if(state)render()};
-if(!puzzles.length)throw new Error('Нет сканвордов');openPuzzle(puzzles[0]);if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=14').catch(()=>{});
+window.render_game_to_text=()=>JSON.stringify({mode:els.dialog.hidden?'playing':'complete',version:'v15',puzzle:state.puzzle.number,category:state.puzzle.category,grid:{cols:state.puzzle.cols,rows:state.puzzle.rows,letters:Object.keys(state.solution).length,clues:state.puzzle.words.length,blocks:state.puzzle.blocks.length,words:state.puzzle.words.length,zoom:state.zoom,scrollLeft:els.board.scrollLeft,scrollTop:els.board.scrollTop},active:{clue:activeWord().clue,direction:arrowFor(activeWord()),length:activeWord().answer.length},filledCells:Object.keys(state.cells).length,totalCells:Object.keys(state.solution).length,complete:puzzleDone()});window.advanceTime=()=>{if(state)render()};
+if(!puzzles.length)throw new Error('Нет сканвордов');openPuzzle(puzzles[0]);if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=15').catch(()=>{});
 })();

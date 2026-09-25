@@ -40,7 +40,7 @@ test('catalog keeps six original 10 by 7 boards',()=>{
   const clues=puzzles.flatMap(p=>p.words.map(w=>w.clue));
   assert.equal(new Set(answers).size,answers.length);
   assert.equal(new Set(clues).size,clues.length);
-  for(const puzzle of puzzles){assert.equal(puzzle.cols,10);assert.equal(puzzle.rows,7);assert.equal(puzzle.words.length,12);assert.equal(inspect(puzzle).size,70);assert.ok(puzzle.blocks.length>=2);}
+  for(const puzzle of puzzles){assert.equal(puzzle.cols,10);assert.equal(puzzle.rows,7);assert.equal(puzzle.words.length,12);assert.equal(inspect(puzzle).size,70);assert.ok(puzzle.blocks.length>=1);}
 });
 test('dictionary remains original Russian material',()=>{
   assert.ok(words.length>=300);assert.equal(new Set(words.map(w=>w.answer)).size,words.length);

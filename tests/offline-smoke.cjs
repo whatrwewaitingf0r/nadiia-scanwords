@@ -19,7 +19,7 @@ const url = process.argv[2] || 'http://127.0.0.1:8765/index.html';
   assert.equal(await page.locator('.clue-part').count(), 12);
   await context.setOffline(false);
   await browser.close();
-  console.log('Offline smoke: v14 game shell and puzzle data passed.');
+  console.log('Offline smoke: v15 game shell and puzzle data passed.');
 })().catch((error) => {
   console.error(error);
   process.exitCode = 1;
