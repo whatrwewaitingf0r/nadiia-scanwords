@@ -5,7 +5,7 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 const puzzles = require('../data/puzzles.json');
 
-test('v17 answers always run forward from the clue cell', () => {
+test('v18 answers always run forward from the clue cell', () => {
   for (const puzzle of puzzles) {
     assert.equal(puzzle.cols, 10);
     assert.equal(puzzle.rows, 7);
@@ -19,11 +19,11 @@ test('v17 answers always run forward from the clue cell', () => {
   }
 });
 
-test('v17 release assets and confetti for words and puzzle', () => {
+test('v18 release assets and confetti for words and puzzle', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const app = fs.readFileSync(path.join(root, 'js/app.js'), 'utf8');
-  assert.match(html, /content="v17"/);
-  assert.doesNotMatch(html, /<script src="js\/generator\.js/, 'legacy reverse-fill generator must not load in v17');
+  assert.match(html, /content="v18"/);
+  assert.doesNotMatch(html, /<script src="js\/generator\.js/, 'legacy reverse-fill generator must not load in v18');
   assert.match(app, /launchWordConfetti/);
   assert.match(app, /launchPuzzleConfetti/);
 });
