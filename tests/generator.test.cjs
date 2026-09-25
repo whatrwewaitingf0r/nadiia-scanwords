@@ -25,7 +25,7 @@ function inspect(puzzle) {
       answers.set(key,cell.letter);
     }
   }
-  return new Set([...answers.keys(),...clues]);
+  return new Set([...answers.keys(),...clues,...(puzzle.blocks||[]).map(block=>`${block.row}:${block.col}`)]);
 }
 test('generator exports deterministic large-cell 7 by 10 scanwords',()=>{
   const {createPuzzle}=require('../js/generator.js');
@@ -34,13 +34,13 @@ test('generator exports deterministic large-cell 7 by 10 scanwords',()=>{
   assert.equal(first.words.length,12); assert.ok(first.words.some(w=>w.direction==='across')); assert.ok(first.words.some(w=>w.direction==='down'));
   assert.equal(inspect(first).size,70,'every cell must be a real clue or answer');
 });
-test('catalog keeps six handcrafted 10 by 7 boards',()=>{
+test('catalog keeps six original 10 by 7 boards',()=>{
   assert.equal(puzzles.length,6);
   const answers=puzzles.flatMap(p=>p.words.map(w=>w.answer));
   const clues=puzzles.flatMap(p=>p.words.map(w=>w.clue));
   assert.equal(new Set(answers).size,answers.length);
   assert.equal(new Set(clues).size,clues.length);
-  for(const puzzle of puzzles){assert.equal(puzzle.cols,10);assert.equal(puzzle.rows,7);assert.equal(puzzle.words.length,10);assert.equal(inspect(puzzle).size,66);assert.equal(puzzle.blocks.length,4);}
+  for(const puzzle of puzzles){assert.equal(puzzle.cols,10);assert.equal(puzzle.rows,7);assert.equal(puzzle.words.length,12);assert.equal(inspect(puzzle).size,70);assert.ok(puzzle.blocks.length>=2);}
 });
 test('dictionary remains original Russian material',()=>{
   assert.ok(words.length>=300);assert.equal(new Set(words.map(w=>w.answer)).size,words.length);

@@ -19,4 +19,4 @@ This project is a recreational word-puzzle interface for Nadiia's mother. It is 
 
 ## Content provenance
 
-All clues and word lists in this repository were written for this project. No commercial scanword pack, artwork, icon set, branding, pencil mark, or MBEX content was copied or scraped.
+All clues and word lists in this repository were written for this project. For v14, graycell.ru screenshots informed only the brief newspaper-clue style; no puzzles, clue texts, or answer lists were copied or scraped. No commercial scanword pack, artwork, icon set, branding, pencil mark, or MBEX content was copied or scraped.
