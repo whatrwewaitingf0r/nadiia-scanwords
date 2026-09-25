@@ -23,6 +23,7 @@ test('v15 release assets and confetti for words and puzzle', () => {
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   const app = fs.readFileSync(path.join(root, 'js/app.js'), 'utf8');
   assert.match(html, /content="v15"/);
+  assert.doesNotMatch(html, /<script src="js\/generator\.js/, 'legacy reverse-fill generator must not load in v15');
   assert.match(app, /launchWordConfetti/);
   assert.match(app, /launchPuzzleConfetti/);
 });
