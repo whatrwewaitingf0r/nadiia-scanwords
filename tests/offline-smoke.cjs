@@ -16,10 +16,10 @@ const url = process.argv[2] || 'http://127.0.0.1:8765/index.html';
   await page.waitForSelector('.grid-cell.clue');
   assert.equal(await page.locator('.grid-cell').count(), 70);
   assert.equal(await page.locator('.letter-tile').count(), 20);
-  assert.equal(await page.locator('.clue-part').count(), 12);
+  assert.equal(await page.locator('.clue-part').count(), 8);
   await context.setOffline(false);
   await browser.close();
-  console.log('Offline smoke: v17 game shell and puzzle data passed.');
+  console.log('Offline smoke: v18 game shell and puzzle data passed.');
 })().catch((error) => {
   console.error(error);
   process.exitCode = 1;
