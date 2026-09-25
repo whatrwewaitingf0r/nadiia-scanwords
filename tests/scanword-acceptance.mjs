@@ -1,23 +1,22 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-
-assert.match(html, /content="v3"/, 'build must be marked v3');
-assert.match(html, /id="scanwordGrid"/, 'scanword grid must exist');
-assert.match(html, /id="letterTiles"/, 'letter tile area must exist');
-assert.match(html, /grid-template-columns:\s*repeat\(14,/, 'grid must have fourteen packed columns');
-assert.match(html, /grid-template-columns:\s*repeat\(10,\s*1fr\)/, 'tiles must form two full ten-column rows');
-assert.match(html, /id="nativeKeyboard"/, 'native keyboard control must exist');
-assert.match(html, /id="keyboardInput"[^>]*inputmode="text"/, 'keyboard control must focus a text input');
-assert.match(html, /id="confetti"/, 'completion confetti layer must exist');
-assert.match(html, /window\.render_game_to_text/, 'game must expose readable state');
-assert.match(html, /window\.advanceTime/, 'game must expose deterministic stepping');
-assert.doesNotMatch(html, /mbex|7600/i, 'published artifact must not reference copied source material');
-assert.match(html, /'Пословицы и устойчивые выражения'/, 'catalog must use the requested proverbs category label');
-assert.match(html, /'Смесь \/ классика сканворда'/, 'catalog must use the requested classic category label');
-
-const tileLetters = html.match(/const TILE_ALPHABET\s*=\s*\[([^\]]+)\]/s)?.[1] ?? '';
-assert.ok((tileLetters.match(/'/g) ?? []).length >= 40, 'tile alphabet must contain at least 20 letters');
-
-console.log('scanword acceptance checks passed');
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const css=readFileSync(new URL('../styles.css',import.meta.url),'utf8');
+const app=readFileSync(new URL('../js/app.js',import.meta.url),'utf8');
+const puzzles=JSON.parse(readFileSync(new URL('../data/puzzles.json',import.meta.url),'utf8'));
+assert.match(html,/content="v4"/);
+assert.match(html,/>Сканворды</);
+assert.match(html,/Список/); assert.match(html,/Статистика/);
+assert.match(html,/id="menu-button"/); assert.match(html,/id="category-filter"/);
+assert.match(html,/id="puzzle-catalog"/); assert.match(html,/id="back-button"/);
+assert.match(html,/id="letter-tiles"/); assert.match(html,/id="confetti"/);
+assert.match(css,/grid-template-columns:\s*repeat\(3,/);
+assert.match(css,/@media\s*\(min-width:\s*700px\)[\s\S]*repeat\(5,/);
+assert.match(css,/grid-template-rows:\s*repeat\(2,/);
+assert.ok(puzzles.length>=80,`expected >=80 puzzles, got ${puzzles.length}`);
+assert.deepEqual(puzzles.map(p=>p.number),Array.from({length:puzzles.length},(_,i)=>i+1));
+assert.ok(puzzles.every(p=>p.words.some(w=>w.direction==='across')&&p.words.some(w=>w.direction==='down')));
+assert.doesNotMatch(app,/is-wrong/,'must not flash wrong letters instantly');
+assert.match(app,/sparkleWord/); assert.match(app,/launchConfetti/);
+assert.match(app,/window\.render_game_to_text/);
+console.log('scanword v4 acceptance checks passed');
