@@ -4,7 +4,7 @@ const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const css=readFileSync(new URL('../styles.css',import.meta.url),'utf8');
 const app=readFileSync(new URL('../js/app.js',import.meta.url),'utf8');
 const puzzles=JSON.parse(readFileSync(new URL('../data/puzzles.json',import.meta.url),'utf8'));
-assert.match(html,/content="v15"/);
+assert.match(html,/content="v16"/);
 assert.match(html,/>Сканворды</);
 assert.match(html,/id="menu-button"/);
 assert.match(html,/id="zoom-out"[^>]*>[\s\S]*?−/);
@@ -30,4 +30,4 @@ assert.equal(new Set(allWords.map(w=>w.clue)).size,allWords.length,'every clue m
 assert.doesNotMatch(app,/is-wrong/,'must not flash wrong letters instantly');
 assert.match(app,/launchWordConfetti/); assert.match(app,/launchPuzzleConfetti/);
 assert.match(app,/window\.render_game_to_text/);
-console.log('scanword v15 large-type acceptance checks passed');
+console.log('scanword v16 large-type acceptance checks passed');
