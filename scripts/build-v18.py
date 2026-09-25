@@ -142,7 +142,8 @@ def build(number, category, available, seed, required=(), target=8, min_theme=3)
             if index == 0:
                 entry, candidate, crosses = first, p, 0
             else:
-                need_theme = theme_count < min_theme and (index >= target-4 or rng.random() < .58)
+                theme_deadline = 4 if number <= 50 else target-4
+                need_theme = theme_count < min_theme and (index >= theme_deadline or rng.random() < .58)
                 pool = [e for e in available if e['answer'] not in {x[0]['answer'] for x in chosen}]
                 spent = Counter(x[0]['category'] for x in chosen)
                 if need_theme:
