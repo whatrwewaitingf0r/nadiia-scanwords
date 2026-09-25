@@ -3,7 +3,7 @@ const path = require('node:path');
 const assert = require('node:assert/strict');
 const { chromium } = require('/opt/homebrew/lib/node_modules/@browserbasehq/browse-cli/node_modules/playwright');
 const baseUrl = process.argv[2] || `file://${path.join(__dirname, '..', 'index.html')}`;
-const output = path.join(__dirname, '..', 'output', 'v15');
+const output = path.join(__dirname, '..', 'output', 'v16');
 fs.mkdirSync(output, { recursive: true });
 (async () => {
   const browser = await chromium.launch({ headless: true });
@@ -14,7 +14,7 @@ fs.mkdirSync(output, { recursive: true });
     page.on('pageerror',e=>errors.push(String(e))); page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
     await page.goto(baseUrl,{waitUntil:'domcontentloaded'}); await page.waitForSelector('.grid-cell.clue');
     const initial=JSON.parse(await page.evaluate(()=>window.render_game_to_text()));
-    assert.equal(initial.version,'v15'); assert.equal(initial.grid.cols,10); assert.equal(initial.grid.rows,7); assert.equal(initial.grid.clues,12); assert.equal(initial.grid.words,12); assert.ok(initial.grid.blocks>=1); assert.equal(initial.grid.letters+initial.grid.clues+initial.grid.blocks,70);
+    assert.equal(initial.version,'v16'); assert.equal(initial.grid.cols,10); assert.equal(initial.grid.rows,7); assert.equal(initial.grid.clues,12); assert.equal(initial.grid.words,12); assert.ok(initial.grid.blocks>=1); assert.equal(initial.grid.letters+initial.grid.clues+initial.grid.blocks,70);
     assert.equal(await page.locator('.grid-cell').count(),70); assert.equal(await page.locator('.clue-part').count(),12); assert.equal(await page.locator('.letter-tile').count(),20);
     const sizing=await page.evaluate(()=>{const answer=document.querySelector('.grid-cell.answer'),clueText=document.querySelector('.clue-text'),board=document.querySelector('.scanword-grid').getBoundingClientRect(),area=document.querySelector('.board-area').getBoundingClientRect(),clue=document.querySelector('.clue-bar').getBoundingClientRect(),tiles=document.querySelector('.letter-tiles').getBoundingClientRect(),last=document.querySelector('.letter-tile:last-child').getBoundingClientRect(),foot=document.querySelector('.game-foot').getBoundingClientRect();return{cell:answer.getBoundingClientRect().width,cellHeight:answer.getBoundingClientRect().height,tilesTop:tiles.top,clueBottom:clue.bottom,footBottom:foot.bottom,answerFont:parseFloat(getComputedStyle(answer).fontSize),clueFont:parseFloat(getComputedStyle(clueText).fontSize),boardWidth:board.width,boardBottom:board.bottom,areaBottom:area.bottom,clueTop:clue.top,tilesBottom:tiles.bottom,lastBottom:last.bottom,innerWidth,innerHeight}});
     assert.ok(sizing.cell>=37,JSON.stringify(sizing)); assert.ok(sizing.answerFont>=20,JSON.stringify(sizing)); assert.ok(sizing.clueFont>=8,JSON.stringify(sizing)); assert.ok(sizing.boardWidth<=sizing.innerWidth+1,JSON.stringify(sizing));
@@ -23,6 +23,26 @@ fs.mkdirSync(output, { recursive: true });
     for(let puzzleIndex=0;puzzleIndex<6;puzzleIndex++){
       const clipped=await page.evaluate(()=>[...document.querySelectorAll('.clue-part')].map(part=>{const text=part.querySelector('.clue-text'),arrow=part.querySelector('.clue-arrow'),textBox=text.getBoundingClientRect(),arrowBox=arrow.getBoundingClientRect();return {clue:text.textContent,clipped:text.scrollHeight>text.clientHeight+1||text.scrollWidth>text.clientWidth+1||(part.dataset.direction==='up'?textBox.top<arrowBox.bottom+1:textBox.bottom>arrowBox.top-1)}}).filter(entry=>entry.clipped));
       assert.deepEqual(clipped,[],`${scenario.name} puzzle ${puzzleIndex+1}: ${JSON.stringify(clipped)}`);
+      for(let wordIndex=0;wordIndex<12;wordIndex++){
+        await page.locator('.clue-part').nth(wordIndex).click();
+        const selection=await page.evaluate(()=>{
+          const id=document.querySelector('.clue-part.is-active').dataset.wordId;
+          const word=window.SCANWORD_PUZZLES.find(p=>p.number===JSON.parse(window.render_game_to_text()).puzzle).words.find(w=>w.id===id);
+          const selected=[...document.querySelectorAll('.grid-cell')].flatMap((cell,index)=>cell.classList.contains('is-active')?[index]:[]);
+          return {word,selected};
+        });
+        const expected=[...selection.word.answer].map((_,i)=>(selection.word.row+(selection.word.direction==='down'?i:0))*10+selection.word.col+(selection.word.direction==='across'?i:0));
+        assert.deepEqual(selection.selected,expected.sort((a,b)=>a-b),`${scenario.name}: ${selection.word.clue} highlighted wrong cells`);
+        if(scenario.name==='iphone'&&selection.word.clue==='Пенится в воде'){
+          const colors=await page.evaluate(()=>{
+            const active=document.querySelector('.grid-cell.answer.is-active');
+            const inactive=document.querySelector('.grid-cell.answer:not(.is-active)');
+            return [getComputedStyle(active).backgroundColor,getComputedStyle(inactive).backgroundColor];
+          });
+          assert.notEqual(colors[0],colors[1],'selected word must be visibly highlighted');
+          await page.screenshot({path:path.join(output,'iphone-soap-selected.png'),fullPage:false});
+        }
+      }
       if(puzzleIndex<5){await page.locator('#menu-button').click();await page.locator('#puzzle-list button').nth(puzzleIndex+1).click()}
     }
     await page.locator('#menu-button').click();await page.locator('#puzzle-list button').first().click();
@@ -38,11 +58,11 @@ fs.mkdirSync(output, { recursive: true });
     await page.locator('#theme-button').click(); assert.ok(await page.locator('body').evaluate(b=>b.classList.contains('theme-dark')));
     await page.locator('#menu-button').click(); assert.equal(await page.locator('#puzzle-list button').count(),6); await page.locator('#close-menu').click();
     await page.screenshot({path:path.join(output,`${scenario.name}-game.png`),fullPage:false});
-    const stored=await page.evaluate(()=>localStorage.getItem('nadiia-scanwords-v15')); assert.ok(stored&&stored.includes('scanword-001'));
+    const stored=await page.evaluate(()=>localStorage.getItem('nadiia-scanwords-v16')); assert.ok(stored&&stored.includes('scanword-001'));
     await page.reload({waitUntil:'domcontentloaded'}); assert.ok(JSON.parse(await page.evaluate(()=>window.render_game_to_text())).filledCells>=1);
     const clueCount=await page.locator('.clue-part').count(); for(let i=0;i<clueCount;i++){await page.locator('.clue-part').nth(i).click();await page.locator('#hints-button').click();await page.locator('#hint-word').click();if(i===0)assert.equal(await page.locator('#confetti').evaluate(el=>el.style.display),'block','each completed word must burst confetti')}
     await page.waitForSelector('#complete-dialog:not([hidden])'); assert.equal(JSON.parse(await page.evaluate(()=>window.render_game_to_text())).complete,true); assert.deepEqual(errors,[]);
     await context.close();
   }
-  await browser.close(); console.log('Browser smoke: v15 10×7 grid, zoom, bottom dock, persistence, and completion passed.');
+  await browser.close(); console.log('Browser smoke: v16 10×7 grid, zoom, bottom dock, persistence, and completion passed.');
 })().catch(error=>{console.error(error);process.exitCode=1});
