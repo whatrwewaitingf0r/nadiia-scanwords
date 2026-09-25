@@ -7,9 +7,9 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const puzzles = JSON.parse(read('data/puzzles.json'));
 
 test('six original 10 by 7 boards have no unused white cells', () => {
-  assert.equal(puzzles.length, 6);
+  assert.equal(puzzles.length, 56);
   const allAnswers = new Set();
-  for (const puzzle of puzzles) {
+  for (const puzzle of puzzles.slice(0, 6)) {
     assert.equal(puzzle.cols, 10);
     assert.equal(puzzle.rows, 7);
     assert.equal(puzzle.words.length, 12);
