@@ -1,1 +1,1 @@
-{"name":"nadiia-scanwords","version":"17.0.0","private":true,"scripts":{"test":"node --test tests/*.test.cjs && node tests/scanword-acceptance.mjs"}}
+{"name":"nadiia-scanwords","version":"18.0.0","private":true,"scripts":{"test":"node --test tests/*.test.cjs && node tests/scanword-acceptance.mjs"}}
