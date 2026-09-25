@@ -32,8 +32,8 @@ test('six original 10 by 7 boards have no unused white cells', () => {
     }
     for (const key of clues) assert.ok(!letters.has(key), key);
     assert.ok(letters.size <= 57);
-    assert.equal(clues.size, 12);
     assert.ok(puzzle.blocks.length >= 1);
+    assert.equal(clues.size, 12);
     for (const block of puzzle.blocks) {
       const key = `${block.row}:${block.col}`;
       assert.ok(!letters.has(key) && !clues.has(key));
