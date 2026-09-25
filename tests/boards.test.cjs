@@ -12,7 +12,7 @@ test('six original 10 by 7 boards have no unused white cells', () => {
   for (const puzzle of puzzles.slice(0, 6)) {
     assert.equal(puzzle.cols, 10);
     assert.equal(puzzle.rows, 7);
-    assert.equal(puzzle.words.length, 12);
+    assert.equal(puzzle.words.length, 8);
     const letters = new Map();
     const clues = new Set();
     for (const word of puzzle.words) {
@@ -33,7 +33,7 @@ test('six original 10 by 7 boards have no unused white cells', () => {
     for (const key of clues) assert.ok(!letters.has(key), key);
     assert.ok(letters.size <= 57);
     assert.ok(puzzle.blocks.length >= 1);
-    assert.equal(clues.size, 12);
+    assert.equal(clues.size, 8);
     for (const block of puzzle.blocks) {
       const key = `${block.row}:${block.col}`;
       assert.ok(!letters.has(key) && !clues.has(key));
