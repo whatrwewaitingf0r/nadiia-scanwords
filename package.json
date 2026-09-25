@@ -1,0 +1,10 @@
+{
+  "name": "nadiia-scanwords",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "generate": "node scripts/generate-puzzles.cjs",
+    "test": "node --test tests/*.test.cjs"
+  }
+}
+

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3f0e6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Сканворды">
+  <meta name="description" content="Русские сканворды, которые работают без интернета">
+  <title>Словолинии — русские сканворды</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app">
+    <section id="catalog-screen" class="screen catalog-screen" aria-labelledby="catalog-title">
+      <header class="catalog-hero">
+        <div class="brand-mark" aria-hidden="true">СЛ</div>
+        <div>
+          <p class="eyebrow">Игра со словами</p>
+          <h1 id="catalog-title">Словолинии</h1>
+          <p class="hero-copy">Небольшие русские сканворды для спокойной паузы.</p>
+        </div>
+      </header>
+
+      <div class="catalog-toolbar">
+        <div>
+          <strong id="catalog-progress">0 из 48</strong>
+          <span>решено</span>
+        </div>
+        <button id="endless-button" class="button button-primary" type="button">
+          <span aria-hidden="true">∞</span> Новая сетка
+        </button>
+      </div>
+
+      <div id="puzzle-catalog" class="puzzle-catalog" aria-label="Каталог сканвордов"></div>
+
+      <details class="help-card">
+        <summary>Как играть</summary>
+        <p>Нажмите серую подсказку или белую клетку. Выбранное слово подсветится целиком. Затем нажимайте плитки с буквами.</p>
+        <p>В клетке-пересечении повторное нажатие меняет направление.</p>
+      </details>
+    </section>
+
+    <section id="game-screen" class="screen game-screen" hidden aria-labelledby="game-title">
+      <header class="game-header">
+        <button id="back-button" class="icon-button" type="button" aria-label="Вернуться к каталогу">←</button>
+        <div class="game-heading">
+          <p class="eyebrow">Словолинии</p>
+          <h1 id="game-title">Сканворд №001</h1>
+        </div>
+        <button id="reset-button" class="icon-button" type="button" aria-label="Очистить эту сетку">↻</button>
+      </header>
+
+      <div id="board-shell" class="board-shell">
+        <div id="scanword-grid" class="scanword-grid" role="grid" aria-label="Сетка сканворда"></div>
+      </div>
+
+      <section class="input-dock" aria-label="Панель ввода">
+        <div class="word-status">
+          <div>
+            <span id="direction-badge" class="direction-badge">→</span>
+            <strong id="active-length">Выберите слово</strong>
+          </div>
+          <span id="puzzle-percent">0%</span>
+        </div>
+
+        <div id="letter-tiles" class="letter-tiles" aria-label="Буквы для слова"></div>
+
+        <div class="hint-row" aria-label="Подсказки">
+          <button id="hint-letter" class="hint-button" type="button"><span aria-hidden="true">◐</span>Открыть букву</button>
+          <button id="hint-extras" class="hint-button" type="button"><span aria-hidden="true">✂</span>Убрать лишние</button>
+          <button id="hint-word" class="hint-button" type="button"><span aria-hidden="true">✓</span>Открыть слово</button>
+          <button id="keyboard-toggle" class="hint-button" type="button" aria-expanded="false"><span aria-hidden="true">АБВ</span>Клавиатура</button>
+        </div>
+
+        <div id="russian-keyboard" class="russian-keyboard" hidden aria-label="Русская клавиатура"></div>
+      </section>
+
+      <div id="complete-dialog" class="complete-dialog" role="dialog" aria-modal="true" aria-labelledby="complete-title" hidden>
+        <div class="complete-card">
+          <div class="complete-sun" aria-hidden="true">✦</div>
+          <h2 id="complete-title">Сетка разгадана!</h2>
+          <p>Все слова сошлись. Можно выбрать следующую.</p>
+          <button id="next-button" class="button button-primary" type="button">Следующий сканворд</button>
+          <button id="catalog-button" class="button button-plain" type="button">В каталог</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <noscript>Для игры нужен JavaScript. Все файлы остаются на вашем устройстве.</noscript>
+  <script src="js/generator.js"></script>
+  <script src="data/words.js"></script>
+  <script src="data/puzzles.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
