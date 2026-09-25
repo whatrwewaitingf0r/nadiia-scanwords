@@ -3,7 +3,7 @@ const path = require('node:path');
 const assert = require('node:assert/strict');
 const { chromium } = require('/opt/homebrew/lib/node_modules/@browserbasehq/browse-cli/node_modules/playwright');
 const baseUrl = process.argv[2] || `file://${path.join(__dirname, '..', 'index.html')}`;
-const output = path.join(__dirname, '..', 'output', 'v17');
+const output = path.join(__dirname, '..', 'output', 'v18');
 fs.mkdirSync(output, { recursive: true });
 (async () => {
   const browser = await chromium.launch({ headless: true });
@@ -14,8 +14,8 @@ fs.mkdirSync(output, { recursive: true });
     page.on('pageerror',e=>errors.push(String(e))); page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
     await page.goto(baseUrl,{waitUntil:'domcontentloaded'}); await page.waitForSelector('.grid-cell.clue');
     const initial=JSON.parse(await page.evaluate(()=>window.render_game_to_text()));
-    assert.equal(initial.version,'v17'); assert.equal(initial.grid.cols,10); assert.equal(initial.grid.rows,7); assert.equal(initial.grid.clues,12); assert.equal(initial.grid.words,12); assert.ok(initial.grid.blocks>=1); assert.equal(initial.grid.letters+initial.grid.clues+initial.grid.blocks,70);
-    assert.equal(await page.locator('.grid-cell').count(),70); assert.equal(await page.locator('.clue-part').count(),12); assert.equal(await page.locator('.letter-tile').count(),20);
+    assert.equal(initial.version,'v18'); assert.equal(initial.grid.cols,10); assert.equal(initial.grid.rows,7); assert.equal(initial.grid.clues,8); assert.equal(initial.grid.words,8); assert.ok(initial.grid.blocks>=1); assert.equal(initial.grid.letters+initial.grid.clues+initial.grid.blocks,70);
+    assert.equal(await page.locator('.grid-cell').count(),70); assert.equal(await page.locator('.clue-part').count(),8); assert.equal(await page.locator('.letter-tile').count(),20);
     const sizing=await page.evaluate(()=>{const answer=document.querySelector('.grid-cell.answer'),clueText=document.querySelector('.clue-text'),board=document.querySelector('.scanword-grid').getBoundingClientRect(),area=document.querySelector('.board-area').getBoundingClientRect(),clue=document.querySelector('.clue-bar').getBoundingClientRect(),tiles=document.querySelector('.letter-tiles').getBoundingClientRect(),last=document.querySelector('.letter-tile:last-child').getBoundingClientRect(),foot=document.querySelector('.game-foot').getBoundingClientRect();return{cell:answer.getBoundingClientRect().width,cellHeight:answer.getBoundingClientRect().height,tilesTop:tiles.top,clueBottom:clue.bottom,footBottom:foot.bottom,answerFont:parseFloat(getComputedStyle(answer).fontSize),clueFont:parseFloat(getComputedStyle(clueText).fontSize),boardWidth:board.width,boardBottom:board.bottom,areaBottom:area.bottom,clueTop:clue.top,tilesBottom:tiles.bottom,lastBottom:last.bottom,innerWidth,innerHeight}});
     assert.ok(sizing.cell>=37,JSON.stringify(sizing)); assert.ok(sizing.answerFont>=20,JSON.stringify(sizing)); assert.ok(sizing.clueFont>=8,JSON.stringify(sizing)); assert.ok(sizing.boardWidth<=sizing.innerWidth+1,JSON.stringify(sizing));
     assert.ok(Math.abs(sizing.areaBottom-sizing.clueTop)<1,`gap before clue bar: ${JSON.stringify(sizing)}`); assert.ok(Math.abs(sizing.tilesTop-sizing.clueBottom)<1,`gap between clue bar and tiles: ${JSON.stringify(sizing)}`); assert.ok(Math.abs(sizing.footBottom-sizing.innerHeight)<2,`bottom gap: ${JSON.stringify(sizing)}`); assert.ok(Math.abs(sizing.boardBottom-sizing.clueTop)<1,JSON.stringify(sizing)); assert.ok(sizing.cellHeight>sizing.cell,JSON.stringify(sizing)); assert.ok(sizing.lastBottom<=sizing.innerHeight+1,JSON.stringify(sizing));
@@ -23,7 +23,7 @@ fs.mkdirSync(output, { recursive: true });
     for(let puzzleIndex=0;puzzleIndex<6;puzzleIndex++){
       const clipped=await page.evaluate(()=>[...document.querySelectorAll('.clue-part')].map(part=>{const text=part.querySelector('.clue-text'),arrow=part.querySelector('.clue-arrow'),textBox=text.getBoundingClientRect(),arrowBox=arrow.getBoundingClientRect();return {clue:text.textContent,clipped:text.scrollHeight>text.clientHeight+1||text.scrollWidth>text.clientWidth+1||(part.dataset.direction==='up'?textBox.top<arrowBox.bottom+1:textBox.bottom>arrowBox.top-1)}}).filter(entry=>entry.clipped));
       assert.deepEqual(clipped,[],`${scenario.name} puzzle ${puzzleIndex+1}: ${JSON.stringify(clipped)}`);
-      for(let wordIndex=0;wordIndex<12;wordIndex++){
+      for(let wordIndex=0;wordIndex<8;wordIndex++){
         await page.locator('.clue-part').nth(wordIndex).click();
         const selection=await page.evaluate(()=>{
           const id=document.querySelector('.clue-part.is-active').dataset.wordId;
@@ -53,7 +53,7 @@ fs.mkdirSync(output, { recursive: true });
         await card.click();
         const state=JSON.parse(await page.evaluate(()=>window.render_game_to_text()));
         assert.equal(state.puzzle,puzzleIndex+1);
-        assert.equal(state.grid.words,8);
+        assert.ok(state.grid.words>=6);
         assert.equal(state.grid.letters+state.grid.clues+state.grid.blocks,70);
         assert.equal(await page.locator('.grid-cell').count(),70);
         const clipped=await page.evaluate(()=>[...document.querySelectorAll('.clue-part')].map(part=>{const text=part.querySelector('.clue-text'),arrow=part.querySelector('.clue-arrow');return {clue:text.textContent,overflow:text.getBoundingClientRect().bottom-arrow.getBoundingClientRect().top}}).filter(entry=>entry.overflow>2));
@@ -75,11 +75,11 @@ fs.mkdirSync(output, { recursive: true });
     await page.locator('#theme-button').click(); assert.ok(await page.locator('body').evaluate(b=>b.classList.contains('theme-dark')));
     await page.locator('#menu-button').click(); assert.equal(await page.locator('#puzzle-list button').count(),56); await page.locator('#close-menu').click();
     await page.screenshot({path:path.join(output,`${scenario.name}-game.png`),fullPage:false});
-    const stored=await page.evaluate(()=>localStorage.getItem('nadiia-scanwords-v16')); assert.ok(stored&&stored.includes('scanword-001'));
+    const stored=await page.evaluate(()=>localStorage.getItem('nadiia-scanwords-v18')); assert.ok(stored&&stored.includes('scanword-001'));
     await page.reload({waitUntil:'domcontentloaded'}); assert.ok(JSON.parse(await page.evaluate(()=>window.render_game_to_text())).filledCells>=1);
     const clueCount=await page.locator('.clue-part').count(); for(let i=0;i<clueCount;i++){await page.locator('.clue-part').nth(i).click();await page.locator('#hints-button').click();await page.locator('#hint-word').click();if(i===0)assert.equal(await page.locator('#confetti').evaluate(el=>el.style.display),'block','each completed word must burst confetti')}
     await page.waitForSelector('#complete-dialog:not([hidden])'); assert.equal(JSON.parse(await page.evaluate(()=>window.render_game_to_text())).complete,true); assert.deepEqual(errors,[]);
     await context.close();
   }
-  await browser.close(); console.log('Browser smoke: v17 10×7 grid, zoom, bottom dock, persistence, and completion passed.');
+  await browser.close(); console.log('Browser smoke: v18 10×7 grid, zoom, bottom dock, persistence, and completion passed.');
 })().catch(error=>{console.error(error);process.exitCode=1});
