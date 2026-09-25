@@ -13232,16 +13232,16 @@
     "words": [
       {
         "id": "w1",
-        "answer": "ПЛАВНИК",
-        "clue": "Рыбий инструмент движения",
-        "cellClue": "Для плавания",
+        "answer": "БАКТЕРИЯ",
+        "clue": "Клетка без оформленного ядра",
+        "cellClue": "Клетка без…",
         "topic": "Биология",
-        "difficulty": "E",
-        "row": 2,
+        "difficulty": "M",
+        "row": 4,
         "col": 2,
         "direction": "across",
         "clueCell": {
-          "row": 2,
+          "row": 4,
           "col": 1
         },
         "arrow": "→"
@@ -13254,27 +13254,27 @@
         "topic": "Общие знания",
         "difficulty": "M",
         "row": 1,
-        "col": 7,
+        "col": 8,
         "direction": "down",
         "clueCell": {
           "row": 0,
-          "col": 7
+          "col": 8
         },
         "arrow": "↓"
       },
       {
         "id": "w3",
-        "answer": "МИЦЕЛИЙ",
-        "clue": "Невидимая сеть грибных нитей",
-        "cellClue": "Невидимая сеть…",
+        "answer": "ПЛАВНИК",
+        "clue": "Рыбий инструмент движения",
+        "cellClue": "Для плавания",
         "topic": "Биология",
-        "difficulty": "H",
-        "row": 4,
-        "col": 2,
+        "difficulty": "E",
+        "row": 2,
+        "col": 3,
         "direction": "across",
         "clueCell": {
-          "row": 4,
-          "col": 1
+          "row": 2,
+          "col": 2
         },
         "arrow": "→"
       },
@@ -13286,11 +13286,11 @@
         "topic": "Биология",
         "difficulty": "M",
         "row": 6,
-        "col": 2,
+        "col": 1,
         "direction": "across",
         "clueCell": {
           "row": 6,
-          "col": 1
+          "col": 0
         },
         "arrow": "→"
       },
@@ -13312,9 +13312,9 @@
       },
       {
         "id": "w6",
-        "answer": "ШАЛАШ",
-        "clue": "Укрытие из веток",
-        "cellClue": "Укрытие из веток",
+        "answer": "ВИШНЯ",
+        "clue": "Красная ягода",
+        "cellClue": "Красная ягода",
         "topic": "Общие знания",
         "difficulty": "M",
         "row": 0,
@@ -13330,7 +13330,7 @@
     "blocks": [
       {
         "row": 0,
-        "col": 8
+        "col": 7
       },
       {
         "row": 0,
@@ -13362,7 +13362,7 @@
       },
       {
         "row": 1,
-        "col": 8
+        "col": 7
       },
       {
         "row": 1,
@@ -13370,7 +13370,7 @@
       },
       {
         "row": 2,
-        "col": 9
+        "col": 1
       },
       {
         "row": 3,
@@ -13398,14 +13398,10 @@
       },
       {
         "row": 3,
-        "col": 8
+        "col": 7
       },
       {
         "row": 3,
-        "col": 9
-      },
-      {
-        "row": 4,
         "col": 9
       },
       {
@@ -13438,7 +13434,7 @@
       },
       {
         "row": 5,
-        "col": 8
+        "col": 7
       },
       {
         "row": 5,
@@ -13446,7 +13442,7 @@
       },
       {
         "row": 6,
-        "col": 0
+        "col": 9
       }
     ]
   },
@@ -13493,6 +13489,22 @@
       },
       {
         "id": "w3",
+        "answer": "КИМОНО",
+        "clue": "Японский халат с поясом",
+        "cellClue": "Японский халат с…",
+        "topic": "Культуры стран",
+        "difficulty": "E",
+        "row": 2,
+        "col": 1,
+        "direction": "across",
+        "clueCell": {
+          "row": 2,
+          "col": 0
+        },
+        "arrow": "→"
+      },
+      {
+        "id": "w4",
         "answer": "ФЛАМЕНКО",
         "clue": "Танец под испанский ритм",
         "cellClue": "Танец под…",
@@ -13508,42 +13520,26 @@
         "arrow": "→"
       },
       {
-        "id": "w4",
-        "answer": "КИМОНО",
-        "clue": "Японский халат с поясом",
-        "cellClue": "Японский халат с…",
-        "topic": "Культуры стран",
-        "difficulty": "E",
-        "row": 1,
-        "col": 9,
-        "direction": "down",
-        "clueCell": {
-          "row": 0,
-          "col": 9
-        },
-        "arrow": "↓"
-      },
-      {
         "id": "w5",
-        "answer": "ПОЛЕВОЙ",
-        "clue": "Растущий или находящийся в поле",
-        "cellClue": "Растущий или…",
+        "answer": "СОВА",
+        "clue": "Ночная птица",
+        "cellClue": "Ночная птица",
         "topic": "Общие знания",
-        "difficulty": "E",
-        "row": 2,
-        "col": 1,
+        "difficulty": "M",
+        "row": 1,
+        "col": 6,
         "direction": "across",
         "clueCell": {
-          "row": 2,
-          "col": 0
+          "row": 1,
+          "col": 5
         },
         "arrow": "→"
       },
       {
         "id": "w6",
-        "answer": "СОВА",
-        "clue": "Ночная птица",
-        "cellClue": "Ночная птица",
+        "answer": "ВРАЧ",
+        "clue": "Лечит людей",
+        "cellClue": "Лечит людей",
         "topic": "Общие знания",
         "difficulty": "M",
         "row": 0,
@@ -13570,6 +13566,10 @@
         "col": 8
       },
       {
+        "row": 0,
+        "col": 9
+      },
+      {
         "row": 1,
         "col": 0
       },
@@ -13590,22 +13590,18 @@
         "col": 4
       },
       {
-        "row": 1,
-        "col": 5
-      },
-      {
-        "row": 1,
+        "row": 2,
         "col": 7
-      },
-      {
-        "row": 1,
-        "col": 8
       },
       {
         "row": 2,
         "col": 8
       },
       {
+        "row": 2,
+        "col": 9
+      },
+      {
         "row": 3,
         "col": 0
       },
@@ -13636,12 +13632,20 @@
       {
         "row": 3,
         "col": 8
+      },
+      {
+        "row": 3,
+        "col": 9
       },
       {
         "row": 4,
         "col": 8
       },
       {
+        "row": 4,
+        "col": 9
+      },
+      {
         "row": 5,
         "col": 0
       },
@@ -13672,6 +13676,10 @@
       {
         "row": 5,
         "col": 8
+      },
+      {
+        "row": 5,
+        "col": 9
       },
       {
         "row": 6,
