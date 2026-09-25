@@ -2,7 +2,7 @@
   "name": "Словолинии — русские сканворды",
   "short_name": "Сканворды",
   "lang": "ru",
-  "start_url": "./?v=15",
+  "start_url": "./?v=16",
   "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
