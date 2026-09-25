@@ -15,3 +15,5 @@ Original prompt: Build and publish an original, dense, fit-to-screen scanword fo
 - 2026-09-25: The board now owns the leftover viewport height, uses fractional square-cell sizing, and keeps the full two-row tile tray as the final control directly above the bottom safe area. Shared clue cells render two independently selectable clue parts.
 - 2026-09-25: v10 discards the 10×14 generator and word-bank pipeline. The shipped catalog is ten explicit, hand-authored 10×7 newspaper blocks with 117 globally unique answers and clue text capped at 22 characters.
 - 2026-09-25: Composition is now thin header → flush 10×7 square grid → full current clue → exactly two full-width tile rows to the bottom; no beige spacer, no clue line clamp, and no layout rotation/zoom.
+
+- 2026-09-25: v11 replaces the sparse v10 set with eight fully occupied 10×7 exact-cover boards. Each has 15 clue cells, 55 answer cells and unique, manually curated short answers and clues; the eighth layout is reflected for variety. The two letter rows now have fixed 44 px tiles, the clue bar is one line, and browser checks cover iPhone SE, iPhone and tablet portrait.

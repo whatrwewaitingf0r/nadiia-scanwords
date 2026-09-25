@@ -34,22 +34,25 @@ function inspect(puzzle) {
   return { answers, clues, used: new Set([...answers.keys(), ...clues.keys()]) };
 }
 
-test('catalog contains ten hand-authored 10 by 7 newspaper scanwords', () => {
-  assert.equal(puzzles.length, 10);
-  assert.deepEqual(puzzles.map((puzzle) => puzzle.number), [1,2,3,4,5,6,7,8,9,10]);
+test('catalog contains eight genuinely packed 10 by 7 newspaper scanwords', () => {
+  assert.equal(puzzles.length, 8);
+  assert.deepEqual(puzzles.map((puzzle) => puzzle.number), [1,2,3,4,5,6,7,8]);
   assert.equal(new Set(puzzles.flatMap((puzzle) => puzzle.words.map((word) => word.answer))).size,
     puzzles.flatMap((puzzle) => puzzle.words).length, 'answers must be unique across the hand-authored set');
   for (const puzzle of puzzles) {
-    assert.equal(puzzle.source, 'hand-authored', puzzle.id);
+    assert.equal(puzzle.source, 'hand-curated exact-cover', puzzle.id);
     assert.equal(puzzle.cols, 10, puzzle.id);
     assert.equal(puzzle.rows, 7, puzzle.id);
-    assert.ok(puzzle.words.length >= 11, `${puzzle.id}: sparse clue packing`);
+    assert.ok(puzzle.words.length >= 15 && puzzle.words.length <= 20, `${puzzle.id}: need 15–20 clue cells`);
     assert.ok(puzzle.words.some((word) => word.direction === 'down'), `${puzzle.id}: missing down clue`);
     assert.ok(puzzle.words.some((word) => word.direction === 'left'), `${puzzle.id}: missing left clue`);
     assert.ok(puzzle.words.some((word) => word.direction === 'across'), `${puzzle.id}: missing right clue`);
-    assert.ok(puzzle.words.every((word) => word.clue.length <= 23), `${puzzle.id}: clue text is too long for one cell`);
+    assert.ok(puzzle.words.every((word) => word.clue.length <= 14 && word.clue.split(/\s+/u).every(part => part.length <= 8)), `${puzzle.id}: clue text is too long for one cell`);
     assert.doesNotMatch(puzzle.words.map((word) => `${word.answer}\n${word.clue}`).join('\n'), /САЛАГА|ИСЛАМАБАД|ПЕНАЛ/u);
-    assert.equal(inspect(puzzle).used.size, 70, `${puzzle.id}: every cell must be clue or letter`);
+    const { answers, clues, used } = inspect(puzzle);
+    assert.equal(used.size, 70, `${puzzle.id}: every cell must be clue or letter`);
+    assert.ok(answers.size >= 50 && answers.size <= 55, `${puzzle.id}: need 50–55 actual letter cells`);
+    assert.equal(clues.size, puzzle.words.length);
   }
 });
 

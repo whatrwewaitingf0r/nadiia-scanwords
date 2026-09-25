@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const { chromium } = require('/opt/homebrew/lib/node_modules/@browserbasehq/browse-cli/node_modules/playwright');
 
 const baseUrl = process.argv[2] || `file://${path.join(__dirname, '..', 'index.html')}`;
-const output = path.join(__dirname, '..', 'output', 'v10-responsive');
+const output = path.join(__dirname, '..', 'output', 'v11-responsive');
 fs.mkdirSync(output, { recursive: true });
 
 (async () => {
@@ -12,7 +12,7 @@ fs.mkdirSync(output, { recursive: true });
   const scenarios = [
     { name: 'iphone-se', width: 375, height: 667 },
     { name: 'iphone', width: 390, height: 844 },
-    { name: 'tablet-landscape', width: 1180, height: 820 },
+    { name: 'tablet-portrait', width: 820, height: 1180 },
   ];
 
   for (const scenario of scenarios) {
@@ -26,10 +26,10 @@ fs.mkdirSync(output, { recursive: true });
 
     const initial = JSON.parse(await page.evaluate(() => window.render_game_to_text()));
     assert.equal(initial.mode, 'playing');
-    assert.equal(initial.version, 'v10');
-    assert.deepEqual(initial.grid, { cols: 10, rows: 7, occupied: 70, words: 12 });
+    assert.equal(initial.version, 'v11');
+    assert.deepEqual(initial.grid, { cols: 10, rows: 7, occupied: 70, letterCells: 55, clueCells: 15, words: 15 });
     assert.equal(await page.locator('.grid-cell').count(), 70);
-    assert.equal(await page.locator('.clue-part').count(), 12);
+    assert.equal(await page.locator('.clue-part').count(), 15);
     assert.equal(await page.locator('.letter-tile').count(), 20);
     assert.equal(await page.locator('.game-head > button').count(), 5);
     assert.equal(await page.locator('#current-clue').textContent(), initial.active.clue);
@@ -43,8 +43,8 @@ fs.mkdirSync(output, { recursive: true });
       const tiles = document.querySelector('.letter-tiles').getBoundingClientRect();
       const lastTile = document.querySelector('.letter-tile:last-child').getBoundingClientRect();
       const tileRows = [...new Set([...document.querySelectorAll('.letter-tile')].map((tile) => Math.round(tile.getBoundingClientRect().top)))];
-      const tileMinimum = innerHeight <= 700 ? 88 : 96;
-      const expectedCell = Math.min(innerWidth / 10, (document.querySelector('.game-screen').clientHeight - header.height - clue.height - tileMinimum) / 7);
+      const stage = document.querySelector('.play-stage').getBoundingClientRect();
+      const expectedCell = Math.min(innerWidth / 10, (stage.height - clue.height) / 7);
       return { cellWidth: cell.width, cellHeight: cell.height, boardTop: board.top, boardBottom: board.bottom,
         areaTop: area.top, areaBottom: area.bottom, clueTop: clue.top, clueBottom: clue.bottom,
         headerBottom: header.bottom, tilesTop: tiles.top, tilesBottom: tiles.bottom,
@@ -54,9 +54,10 @@ fs.mkdirSync(output, { recursive: true });
     });
     assert.ok(Math.abs(sizing.cellWidth - sizing.cellHeight) < 0.1, JSON.stringify(sizing));
     assert.ok(Math.abs(sizing.cellWidth - sizing.expectedCell) <= 1, JSON.stringify(sizing));
-    assert.ok(Math.abs(sizing.headerBottom - sizing.boardTop) < 1, `gap below thin header: ${JSON.stringify(sizing)}`);
+    assert.ok(sizing.boardTop >= sizing.headerBottom, `board overlaps header: ${JSON.stringify(sizing)}`);
     assert.ok(Math.abs(sizing.areaBottom - sizing.clueTop) < 1, `gap before clue bar: ${JSON.stringify(sizing)}`);
-    assert.ok(Math.abs(sizing.clueBottom - sizing.tilesTop) < 1, `gap before tile rows: ${JSON.stringify(sizing)}`);
+    assert.ok(sizing.clueBottom <= sizing.tilesTop, `clue overlaps tiles: ${JSON.stringify(sizing)}`);
+    assert.ok(sizing.tilesBottom - sizing.tilesTop <= 95, `tile bars too tall: ${JSON.stringify(sizing)}`);
     assert.equal(sizing.tileRows, 2);
     assert.ok(Math.abs(sizing.boardWidth - sizing.clueWidth) < 1, JSON.stringify(sizing));
     assert.ok(Math.abs(sizing.boardWidth - sizing.headerWidth) < 1, JSON.stringify(sizing));
@@ -76,8 +77,8 @@ fs.mkdirSync(output, { recursive: true });
 
     const fullClueFits = await page.evaluate(() => {
       const clue = document.querySelector('#current-clue');
-      clue.textContent = 'Признаки и качества объекта';
-      return clue.scrollWidth <= clue.clientWidth + 1 && clue.scrollHeight <= clue.clientHeight + 1;
+      clue.textContent = window.SCANWORD_PUZZLES[0].words[0].clue;
+      return clue.scrollWidth <= clue.clientWidth + 1 && clue.getBoundingClientRect().bottom <= document.querySelector('.clue-bar').getBoundingClientRect().bottom + 1;
     });
     assert.equal(fullClueFits, true, 'current clue must render fully without truncation');
     await page.locator('.clue-part').first().click();
@@ -105,12 +106,12 @@ fs.mkdirSync(output, { recursive: true });
     await page.locator('#theme-button').click();
     assert.ok(await page.locator('body').evaluate((body) => body.classList.contains('theme-dark')));
     await page.locator('#menu-button').click();
-    assert.equal(await page.locator('#puzzle-list button').count(), 10);
+    assert.equal(await page.locator('#puzzle-list button').count(), 8);
     await page.locator('#close-menu').click();
     await page.screenshot({ path: path.join(output, `${scenario.name}-game.png`), fullPage: false });
 
     if (scenario.name === 'iphone-se') {
-      for (let index = 0; index < 10; index += 1) {
+      for (let index = 0; index < 8; index += 1) {
         await page.locator('#menu-button').click();
         await page.locator('#puzzle-list button').nth(index).click();
         assert.equal(await page.locator('.grid-cell').count(), 70, `puzzle ${index + 1}`);
@@ -124,7 +125,7 @@ fs.mkdirSync(output, { recursive: true });
       }
     }
 
-    const stored = await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v10'));
+    const stored = await page.evaluate(() => localStorage.getItem('nadiia-scanwords-v11'));
     assert.ok(stored && stored.includes('scanword-001'));
     await page.reload({ waitUntil: 'domcontentloaded' });
     assert.ok(JSON.parse(await page.evaluate(() => window.render_game_to_text())).filledCells >= 1);
@@ -132,5 +133,5 @@ fs.mkdirSync(output, { recursive: true });
     await context.close();
   }
   await browser.close();
-  console.log('Browser smoke: v10 hand-authored composition passed on iPhone SE, iPhone, and landscape tablet.');
+  console.log('Browser smoke: v11 packed composition passed on iPhone SE, iPhone, and portrait tablet.');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

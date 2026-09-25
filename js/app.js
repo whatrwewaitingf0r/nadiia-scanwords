@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const STORE='nadiia-scanwords-v10';
+const STORE='nadiia-scanwords-v11';
 const puzzles=window.SCANWORD_PUZZLES||[];
 const EXTRA=[...'АЕИОУЫЭЮЯБВГДЖЗЙКЛМНПРСТФХЦЧШЩ'];
 const $=selector=>document.querySelector(selector);
@@ -22,12 +22,10 @@ function resizeBoard(){
  const {cols,rows}=state.puzzle;
  const availableWidth=els.game.clientWidth;
  const rootStyles=getComputedStyle(document.documentElement);
- const headerHeight=parseFloat(rootStyles.getPropertyValue('--header-h'))||40;
  const clueHeight=parseFloat(rootStyles.getPropertyValue('--clue-h'))||64;
- const tileMinimum=innerHeight<=700?88:96;
- const availableHeight=Math.max(rows*24,els.game.clientHeight-headerHeight-clueHeight-tileMinimum);
- let cellSize=Math.min(availableWidth/cols,availableHeight/rows);
- cellSize=Math.max(24,cellSize);
+ const stage=els.game.querySelector('.play-stage');
+ const availableHeight=Math.max(rows*24,stage.clientHeight-clueHeight);
+ const cellSize=Math.min(availableWidth/cols,availableHeight/rows);
  document.documentElement.style.setProperty('--cell',`${cellSize}px`);
  document.documentElement.style.setProperty('--board-cols',cols);
  document.documentElement.style.setProperty('--board-rows',rows);
@@ -49,12 +47,12 @@ function sparkleWord(){const box=els.grid.getBoundingClientRect();for(let index=
 function toast(message){els.feedback.textContent=message;els.feedback.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>els.feedback.classList.remove('show'),1700)}
 function launchConfetti(){const canvas=$('#confetti');canvas.style.display='block';const context=canvas.getContext('2d');canvas.width=innerWidth;canvas.height=innerHeight;const bits=Array.from({length:150},()=>({x:Math.random()*canvas.width,y:-Math.random()*canvas.height*.5,v:2+Math.random()*5,s:3+Math.random()*5,h:Math.random()*360}));let frame=0;(function draw(){context.clearRect(0,0,canvas.width,canvas.height);bits.forEach(bit=>{bit.y+=bit.v;bit.x+=Math.sin((bit.y+bit.h)/28);context.fillStyle=`hsl(${bit.h} 70% 48%)`;context.fillRect(bit.x,bit.y,bit.s,bit.s*1.7)});if(frame++<150)requestAnimationFrame(draw);else{context.clearRect(0,0,canvas.width,canvas.height);canvas.style.display='none'}})()}
 function finish(){if(!els.dialog.hidden)return;saveGame();launchConfetti();els.dialog.hidden=false}
-function render(){renderBoard();renderTiles();const word=activeWord(),total=Object.keys(state.solution).length,done=Object.entries(state.solution).filter(([cellKey,value])=>state.cells[cellKey]===value.letter).length;els.clue.textContent=word.clue;els.label.textContent=`№${state.puzzle.number} · ${Math.round(done/total*100)}% · v10`;resizeBoard()}
+function render(){renderBoard();renderTiles();const word=activeWord(),total=Object.keys(state.solution).length,done=Object.entries(state.solution).filter(([cellKey,value])=>state.cells[cellKey]===value.letter).length;els.clue.textContent=word.clue;els.label.textContent=`№${state.puzzle.number} · ${Math.round(done/total*100)}% · v11`;resizeBoard()}
 function renderPuzzleList(){els.list.replaceChildren(...puzzles.map(puzzle=>{const button=document.createElement('button');button.classList.toggle('is-active',state?.puzzle.id===puzzle.id);button.textContent=`№${puzzle.number} · ${puzzle.category}${saved[puzzle.id]?.completed?' · готово':''}`;button.onclick=()=>{openPuzzle(puzzle);closeDrawer(els.drawer)};return button}))}
 function openDrawer(drawer){drawer.classList.add('open');drawer.setAttribute('aria-hidden','false')}
 function closeDrawer(drawer){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true')}
 function moveWord(delta){const index=state.puzzle.words.findIndex(word=>word.id===state.activeWordId);selectWord(state.puzzle.words[(index+delta+state.puzzle.words.length)%state.puzzle.words.length].id)}
 $('#previous-word').onclick=()=>moveWord(-1);$('#next-word').onclick=()=>moveWord(1);$('#delete-button').onclick=erase;$('#hint-letter').onclick=()=>{reveal();closeDrawer(els.hints)};$('#hint-word').onclick=()=>{revealWord();closeDrawer(els.hints)};$('#hint-extras').onclick=()=>{state.extrasMuted=true;renderTiles();toast('Лишние буквы приглушены.');closeDrawer(els.hints)};$('#menu-button').onclick=()=>openDrawer(els.drawer);$('#hints-button').onclick=()=>openDrawer(els.hints);$('#close-menu').onclick=()=>closeDrawer(els.drawer);$('#close-hints').onclick=()=>closeDrawer(els.hints);[els.drawer,els.hints].forEach(drawer=>drawer.onclick=event=>{if(event.target===drawer)closeDrawer(drawer)});$('#theme-button').onclick=()=>document.body.classList.toggle('theme-dark');$('#back-button').onclick=()=>{const index=puzzles.findIndex(puzzle=>puzzle.id===state.puzzle.id);openPuzzle(puzzles[(index-1+puzzles.length)%puzzles.length])};$('#next-button').onclick=()=>{const index=puzzles.findIndex(puzzle=>puzzle.id===state.puzzle.id);openPuzzle(puzzles[(index+1)%puzzles.length])};$('#catalog-button').onclick=()=>{els.dialog.hidden=true;openDrawer(els.drawer)};els.input.oninput=event=>{const letter=event.target.value.toUpperCase().match(/[А-ЯЁ]/gu)?.at(-1);if(letter)enter(letter);event.target.value=''};document.addEventListener('keydown',event=>{if(!state)return;const pressed=event.key.toUpperCase();if(/^[А-ЯЁ]$/u.test(pressed)){event.preventDefault();enter(pressed)}if(event.key==='Backspace'){event.preventDefault();erase()}if(event.key==='ArrowLeft'){event.preventDefault();state.focus=Math.max(0,state.focus-1);render()}if(event.key==='ArrowRight'){event.preventDefault();state.focus=Math.min(activeWord().answer.length-1,state.focus+1);render()}});addEventListener('resize',resizeBoard);
-window.render_game_to_text=()=>JSON.stringify({mode:els.dialog.hidden?'playing':'complete',version:'v10',puzzle:state.puzzle.number,category:state.puzzle.category,grid:{cols:state.puzzle.cols,rows:state.puzzle.rows,occupied:state.puzzle.cols*state.puzzle.rows,words:state.puzzle.words.length},active:{clue:activeWord().clue,direction:arrowFor(activeWord()),length:activeWord().answer.length},filledCells:Object.keys(state.cells).length,totalCells:Object.keys(state.solution).length,complete:puzzleDone()});window.advanceTime=()=>{if(state)render()};
-if(!puzzles.length)throw new Error('Нет сканвордов');openPuzzle(puzzles[0]);if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=10').catch(()=>{});
+window.render_game_to_text=()=>JSON.stringify({mode:els.dialog.hidden?'playing':'complete',version:'v11',puzzle:state.puzzle.number,category:state.puzzle.category,grid:{cols:state.puzzle.cols,rows:state.puzzle.rows,occupied:Object.keys(state.solution).length+state.puzzle.words.length,letterCells:Object.keys(state.solution).length,clueCells:state.puzzle.words.length,words:state.puzzle.words.length},active:{clue:activeWord().clue,direction:arrowFor(activeWord()),length:activeWord().answer.length},filledCells:Object.keys(state.cells).length,totalCells:Object.keys(state.solution).length,complete:puzzleDone()});window.advanceTime=()=>{if(state)render()};
+if(!puzzles.length)throw new Error('Нет сканвордов');openPuzzle(puzzles[0]);if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=11').catch(()=>{});
 })();

@@ -2,12 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="build-version" content="v10">
+<meta name="build-version" content="v11">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#efeee8">
 <title>Сканворды</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="styles.css?v=10">
+<link rel="stylesheet" href="styles.css?v=11">
 </head>
 <body>
 <main id="game-screen" class="game-screen">
@@ -16,25 +16,25 @@
     <button id="menu-button" class="icon-button" aria-label="Каталог">☷</button>
     <button id="theme-button" class="icon-button" aria-label="Тема">☾</button>
     <button id="delete-button" class="icon-button" aria-label="Стереть букву">⌫</button>
-    <span id="puzzle-label" class="head-space">№1 · v10</span>
+    <span id="puzzle-label" class="head-space">№1 · v11</span>
     <button id="hints-button" class="hints-button">Подсказки</button>
   </header>
-  <section class="board-area"><div id="scanword-grid" class="scanword-grid" role="grid" aria-label="Сетка сканворда"></div></section>
+  <div class="play-stage"><section class="board-area"><div id="scanword-grid" class="scanword-grid" role="grid" aria-label="Сетка сканворда"></div></section>
   <section class="clue-bar">
     <button id="previous-word" aria-label="Предыдущее слово">‹</button>
     <strong id="current-clue"></strong>
     <button id="next-word" aria-label="Следующее слово">›</button>
-  </section>
+  </section></div>
   <section id="letter-tiles" class="letter-tiles" aria-label="Буквы"></section>
   <input id="native-input" class="native-input" inputmode="text" autocomplete="off" aria-label="Системная клавиатура">
 </main>
 
-<aside id="drawer" class="drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-menu" class="close-button" aria-label="Закрыть">×</button><h1>Сканворды</h1><p>Десять вручную собранных газетных сеток. Ни один ответ не повторяется.</p><div id="puzzle-list" class="puzzle-list"></div><small>Версия 10</small></div></aside>
+<aside id="drawer" class="drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-menu" class="close-button" aria-label="Закрыть">×</button><h1>Сканворды</h1><p>Восемь плотных газетных сеток: 15 коротких подсказок в каждой.</p><div id="puzzle-list" class="puzzle-list"></div><small>Версия 11</small></div></aside>
 <aside id="hints-sheet" class="drawer hints-drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-hints" class="close-button" aria-label="Закрыть">×</button><h2>Подсказки</h2><button id="hint-letter">Открыть одну букву</button><button id="hint-word">Открыть всё слово</button><button id="hint-extras">Убрать лишние буквы</button></div></aside>
 <output id="feedback" class="feedback" aria-live="polite"></output>
 <canvas id="confetti"></canvas>
 <div id="complete-dialog" class="complete-dialog" hidden><div><b>Сканворд разгадан! 🎉</b><span>Точно и внимательно</span><button id="next-button">Следующий</button><button id="catalog-button">Выбрать другой</button></div></div>
-<script src="data/puzzles.js?v=10"></script>
-<script src="js/app.js?v=10"></script>
+<script src="data/puzzles.js?v=11"></script>
+<script src="js/app.js?v=11"></script>
 </body>
 </html>

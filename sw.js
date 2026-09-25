@@ -1,4 +1,4 @@
-const CACHE = 'nadiia-scanwords-v10';
+const CACHE = 'nadiia-scanwords-v11';
 const FILES = [
   './', './index.html', './styles.css', './manifest.webmanifest',
   './js/app.js', './data/puzzles.js',

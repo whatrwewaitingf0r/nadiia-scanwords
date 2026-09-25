@@ -18,7 +18,7 @@ test('page is direct-file and iPhone ready', () => {
   assert.ok(html.indexOf('class="clue-bar"') < html.indexOf('id="letter-tiles"'), 'two tile rows must follow the current clue directly');
   assert.match(css, /-webkit-text-size-adjust:\s*100%/);
   assert.match(css, /min-width:\s*44px/);
-  assert.match(css, /grid-template-rows:\s*repeat\(2,minmax\(44px,1fr\)\)/);
+  assert.match(css, /grid-template-rows:\s*repeat\(2,44px\)/);
 });
 
 test('Russian gameplay labels and offline assets are present', () => {
