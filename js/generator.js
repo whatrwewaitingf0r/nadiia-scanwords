@@ -5,73 +5,9 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const ROWS = 7;
+  const ROWS = 14;
   const COLS = 10;
-
-  // [direction, answer length, clue row, clue column]. Each template is an
-  // exact cover: all 70 cells are either a genuine clue or an answer letter.
-  const TEMPLATES = [
-    [
-      ['across',5,6,4],['down',5,1,3],['down',6,0,2],['down',6,0,0],
-      ['down',6,0,1],['left',6,0,9],['across',4,1,5],['down',4,1,4],
-      ['across',4,4,5],['left',4,5,9],['left',4,3,9],['across',4,2,5],
-    ],
-    [
-      ['across',6,0,3],['down',4,0,1],['down',4,0,0],['down',4,0,2],
-      ['left',6,1,9],['left',6,3,9],['across',6,4,3],['across',6,2,3],
-      ['left',4,6,4],['across',4,6,5],['left',4,5,9],['across',4,5,0],
-    ],
-    [
-      ['left',5,6,9],['down',6,0,0],['down',4,2,1],['down',4,2,3],
-      ['down',4,2,2],['left',4,5,8],['down',5,0,9],['across',4,3,4],
-      ['left',4,2,8],['across',4,4,4],['across',7,0,1],['left',7,1,8],
-    ],
-    [
-      ['down',4,0,9],['across',6,5,3],['down',4,2,1],['down',5,1,0],
-      ['down',4,2,2],['across',4,4,3],['down',4,0,8],['left',4,3,7],
-      ['left',4,2,7],['left',6,6,9],['across',6,1,1],['across',7,0,0],
-    ],
-    [
-      ['down',6,0,9],['across',6,0,2],['down',6,0,0],['down',5,0,1],
-      ['left',5,1,7],['down',4,1,8],['across',5,5,2],['across',5,3,2],
-      ['left',5,4,7],['left',5,2,7],['across',7,6,1],
-    ],
-    [
-      ['left',7,0,7],['down',5,0,8],['down',6,0,9],['across',6,6,2],
-      ['down',4,2,0],['down',4,2,1],['left',4,5,6],['down',4,1,7],
-      ['left',4,4,6],['left',4,2,6],['across',4,3,2],['across',6,1,0],
-    ],
-    [
-      ['across',5,6,4],['down',4,2,2],['down',4,2,3],['down',6,0,0],
-      ['down',5,1,1],['left',5,5,9],['left',4,2,8],['down',4,0,9],
-      ['across',4,3,4],['left',4,4,8],['left',6,1,8],['across',7,0,1],
-    ],
-    [
-      ['down',6,0,0],['across',8,0,1],['across',6,6,3],['down',4,2,1],
-      ['down',4,2,2],['left',5,2,8],['down',4,1,9],['across',5,4,3],
-      ['across',5,3,3],['left',5,5,8],['left',7,1,8],
-    ],
-    [
-      ['down',6,0,0],['across',5,6,4],['down',4,2,3],['down',4,2,2],
-      ['down',5,1,1],['left',5,5,9],['across',5,4,4],['left',5,2,9],
-      ['left',5,3,9],['across',7,1,2],['across',8,0,1],
-    ],
-    [
-      ['down',4,0,0],['left',4,6,4],['left',4,6,9],['left',7,5,7],
-      ['down',5,0,9],['down',4,1,8],['across',5,3,2],['down',4,0,1],
-      ['across',5,2,2],['left',5,1,7],['across',5,4,2],['left',6,0,8],
-    ],
-    [
-      ['left',7,0,9],['down',6,0,0],['down',4,0,1],['across',5,1,2],
-      ['down',5,1,8],['down',5,1,9],['left',4,3,6],['down',4,2,7],
-      ['across',4,2,2],['across',4,4,2],['left',5,5,6],['across',5,6,1],
-    ],
-    [
-      ['left',6,6,6],['down',5,1,7],['down',6,0,9],['down',6,0,8],
-      ['across',5,5,1],['down',5,0,0],['left',5,3,6],['across',5,1,1],
-      ['left',5,2,6],['across',5,4,1],['left',6,0,7],
-    ],
-  ];
+  const LAYOUTS = [[{"answer":"КРЫША","row":12,"col":8,"direction":"left","clueCell":{"row":12,"col":9}},{"answer":"ФИАЛКА","row":8,"col":7,"direction":"left","clueCell":{"row":8,"col":8}},{"answer":"СВЕРЧОК","row":7,"col":2,"direction":"across","clueCell":{"row":7,"col":1}},{"answer":"ДЮНА","row":10,"col":5,"direction":"across","clueCell":{"row":10,"col":4}},{"answer":"АДРЕС","row":6,"col":5,"direction":"across","clueCell":{"row":6,"col":4}},{"answer":"ВОЛК","row":5,"col":8,"direction":"left","clueCell":{"row":5,"col":9}},{"answer":"КРАН","row":11,"col":7,"direction":"left","clueCell":{"row":11,"col":8}},{"answer":"ЛУНА","row":9,"col":7,"direction":"left","clueCell":{"row":9,"col":8}},{"answer":"ФОНАРЬ","row":1,"col":2,"direction":"down","clueCell":{"row":0,"col":2}},{"answer":"ЕЖОНОК","row":1,"col":0,"direction":"down","clueCell":{"row":0,"col":0}},{"answer":"СЕКРЕТ","row":1,"col":1,"direction":"down","clueCell":{"row":0,"col":1}},{"answer":"ЗОНТИК","row":0,"col":8,"direction":"left","clueCell":{"row":0,"col":9}},{"answer":"МАЛИНА","row":8,"col":0,"direction":"down","clueCell":{"row":7,"col":0}},{"answer":"ДРОЗД","row":2,"col":3,"direction":"down","clueCell":{"row":1,"col":3}},{"answer":"ГРОЗА","row":13,"col":5,"direction":"across","clueCell":{"row":13,"col":4}},{"answer":"СОСНА","row":9,"col":1,"direction":"down","clueCell":{"row":8,"col":1}},{"answer":"БУРЯ","row":1,"col":6,"direction":"across","clueCell":{"row":1,"col":5}},{"answer":"КИНО","row":2,"col":4,"direction":"down","clueCell":{"row":1,"col":4}},{"answer":"БОРЩ","row":4,"col":6,"direction":"across","clueCell":{"row":4,"col":5}},{"answer":"БРОД","row":3,"col":8,"direction":"left","clueCell":{"row":3,"col":9}},{"answer":"СОЮЗ","row":2,"col":6,"direction":"across","clueCell":{"row":2,"col":5}},{"answer":"ГРАЧ","row":10,"col":2,"direction":"down","clueCell":{"row":9,"col":2}},{"answer":"ПЛАН","row":10,"col":3,"direction":"down","clueCell":{"row":9,"col":3}},{"answer":"ПИРС","row":8,"col":9,"direction":"down","clueCell":{"row":7,"col":9}},{"answer":"КАРАНДАШ","row":5,"col":5,"direction":"down","clueCell":{"row":4,"col":5}}],[{"answer":"ТРОПИНКА","row":7,"col":2,"direction":"across","clueCell":{"row":7,"col":1}},{"answer":"ФРУКТ","row":9,"col":7,"direction":"left","clueCell":{"row":9,"col":8}},{"answer":"СИНИЙ","row":12,"col":7,"direction":"left","clueCell":{"row":12,"col":8}},{"answer":"КЛАВИША","row":8,"col":7,"direction":"left","clueCell":{"row":8,"col":8}},{"answer":"СТАДО","row":10,"col":4,"direction":"across","clueCell":{"row":10,"col":3}},{"answer":"ЧАЙНИК","row":13,"col":4,"direction":"across","clueCell":{"row":13,"col":3}},{"answer":"ТИХИЙ","row":11,"col":4,"direction":"across","clueCell":{"row":11,"col":3}},{"answer":"ГОРНЫЙ","row":0,"col":4,"direction":"across","clueCell":{"row":0,"col":3}},{"answer":"СОРОКА","row":1,"col":8,"direction":"left","clueCell":{"row":1,"col":9}},{"answer":"УЮТНЫЙ","row":3,"col":8,"direction":"left","clueCell":{"row":3,"col":9}},{"answer":"ПЕРРОН","row":4,"col":4,"direction":"across","clueCell":{"row":4,"col":3}},{"answer":"СОЛНЦЕ","row":2,"col":4,"direction":"across","clueCell":{"row":2,"col":3}},{"answer":"ЯНТАРЬ","row":8,"col":0,"direction":"down","clueCell":{"row":7,"col":0}},{"answer":"ИГРА","row":1,"col":1,"direction":"down","clueCell":{"row":0,"col":1}},{"answer":"ЗМЕЯ","row":1,"col":0,"direction":"down","clueCell":{"row":0,"col":0}},{"answer":"АИСТ","row":1,"col":2,"direction":"down","clueCell":{"row":0,"col":2}},{"answer":"МАЯК","row":6,"col":3,"direction":"left","clueCell":{"row":6,"col":4}},{"answer":"КОФЕ","row":6,"col":6,"direction":"across","clueCell":{"row":6,"col":5}},{"answer":"ЧАША","row":5,"col":8,"direction":"left","clueCell":{"row":5,"col":9}},{"answer":"МЫЛО","row":5,"col":1,"direction":"across","clueCell":{"row":5,"col":0}},{"answer":"СПОР","row":10,"col":1,"direction":"down","clueCell":{"row":9,"col":1}},{"answer":"НОТА","row":10,"col":2,"direction":"down","clueCell":{"row":9,"col":2}},{"answer":"МАРШ","row":9,"col":9,"direction":"down","clueCell":{"row":8,"col":9}},{"answer":"ПАУТИНА","row":7,"col":5,"direction":"down","clueCell":{"row":6,"col":5}}],[{"answer":"ФЕРМА","row":13,"col":5,"direction":"across","clueCell":{"row":13,"col":4}},{"answer":"УЛИЦА","row":12,"col":8,"direction":"left","clueCell":{"row":12,"col":9}},{"answer":"МОРКОВЬ","row":8,"col":3,"direction":"across","clueCell":{"row":8,"col":2}},{"answer":"АРЕНА","row":6,"col":8,"direction":"left","clueCell":{"row":6,"col":9}},{"answer":"АТЛАС","row":9,"col":8,"direction":"left","clueCell":{"row":9,"col":9}},{"answer":"РАДИО","row":10,"col":8,"direction":"left","clueCell":{"row":10,"col":9}},{"answer":"ЯРКИЙ","row":11,"col":5,"direction":"across","clueCell":{"row":11,"col":4}},{"answer":"ПЕТРУШКА","row":7,"col":2,"direction":"across","clueCell":{"row":7,"col":1}},{"answer":"СИНИЦА","row":1,"col":0,"direction":"down","clueCell":{"row":0,"col":0}},{"answer":"КУВШИН","row":8,"col":0,"direction":"down","clueCell":{"row":7,"col":0}},{"answer":"ПРУЖИНА","row":0,"col":2,"direction":"across","clueCell":{"row":0,"col":1}},{"answer":"БАРАБАН","row":1,"col":7,"direction":"left","clueCell":{"row":1,"col":8}},{"answer":"НАРОД","row":1,"col":9,"direction":"down","clueCell":{"row":0,"col":9}},{"answer":"БУКЕТ","row":9,"col":1,"direction":"down","clueCell":{"row":8,"col":1}},{"answer":"СЛОН","row":3,"col":1,"direction":"down","clueCell":{"row":2,"col":1}},{"answer":"ЛАПА","row":3,"col":3,"direction":"down","clueCell":{"row":2,"col":3}},{"answer":"ПАРК","row":3,"col":2,"direction":"down","clueCell":{"row":2,"col":2}},{"answer":"ПЛЕД","row":5,"col":7,"direction":"left","clueCell":{"row":5,"col":8}},{"answer":"СТИХ","row":3,"col":5,"direction":"across","clueCell":{"row":3,"col":4}},{"answer":"РЕКА","row":2,"col":7,"direction":"left","clueCell":{"row":2,"col":8}},{"answer":"МЕТР","row":4,"col":5,"direction":"across","clueCell":{"row":4,"col":4}},{"answer":"ЖАНР","row":10,"col":3,"direction":"down","clueCell":{"row":9,"col":3}},{"answer":"КЕДР","row":10,"col":2,"direction":"down","clueCell":{"row":9,"col":2}},{"answer":"АКВАРИУМ","row":6,"col":8,"direction":"down","clueCell":{"row":5,"col":8}}],[{"answer":"БАРХАТ","row":6,"col":8,"direction":"left","clueCell":{"row":6,"col":9}},{"answer":"ДЕЛЬФИН","row":12,"col":6,"direction":"left","clueCell":{"row":12,"col":7}},{"answer":"АЛМАЗ","row":10,"col":3,"direction":"across","clueCell":{"row":10,"col":2}},{"answer":"ОГУРЕЦ","row":7,"col":7,"direction":"left","clueCell":{"row":7,"col":8}},{"answer":"РОБОТ","row":9,"col":3,"direction":"across","clueCell":{"row":9,"col":2}},{"answer":"ДИВАН","row":11,"col":3,"direction":"across","clueCell":{"row":11,"col":2}},{"answer":"МЕЧТА","row":8,"col":6,"direction":"left","clueCell":{"row":8,"col":7}},{"answer":"КОРЕНЬ","row":5,"col":4,"direction":"across","clueCell":{"row":5,"col":3}},{"answer":"ПИСЬМО","row":1,"col":2,"direction":"across","clueCell":{"row":1,"col":1}},{"answer":"КУКУШКА","row":0,"col":1,"direction":"across","clueCell":{"row":0,"col":0}},{"answer":"ОЛЕНЬ","row":2,"col":0,"direction":"down","clueCell":{"row":1,"col":0}},{"answer":"МЫШКА","row":8,"col":9,"direction":"down","clueCell":{"row":7,"col":9}},{"answer":"БИНТ","row":1,"col":9,"direction":"down","clueCell":{"row":0,"col":9}},{"answer":"УТКА","row":3,"col":1,"direction":"down","clueCell":{"row":2,"col":1}},{"answer":"ЛЕТО","row":3,"col":2,"direction":"down","clueCell":{"row":2,"col":2}},{"answer":"ВАЗА","row":4,"col":4,"direction":"across","clueCell":{"row":4,"col":3}},{"answer":"БОБР","row":1,"col":8,"direction":"down","clueCell":{"row":0,"col":8}},{"answer":"УТРО","row":3,"col":6,"direction":"left","clueCell":{"row":3,"col":7}},{"answer":"РИТМ","row":2,"col":6,"direction":"left","clueCell":{"row":2,"col":7}},{"answer":"ОРЁЛ","row":8,"col":0,"direction":"down","clueCell":{"row":7,"col":0}},{"answer":"ЗАЛП","row":13,"col":3,"direction":"left","clueCell":{"row":13,"col":4}},{"answer":"СЛЕД","row":13,"col":8,"direction":"left","clueCell":{"row":13,"col":9}},{"answer":"ДВОР","row":9,"col":8,"direction":"down","clueCell":{"row":8,"col":8}},{"answer":"ФЛОТ","row":8,"col":1,"direction":"down","clueCell":{"row":7,"col":1}},{"answer":"ТЕТРАДЬ","row":6,"col":3,"direction":"down","clueCell":{"row":5,"col":3}}],[{"answer":"БАЛЕТ","row":8,"col":3,"direction":"across","clueCell":{"row":8,"col":2}},{"answer":"ПАРУС","row":5,"col":3,"direction":"across","clueCell":{"row":5,"col":2}},{"answer":"СКРИПКА","row":6,"col":2,"direction":"across","clueCell":{"row":6,"col":1}},{"answer":"КАПУСТА","row":7,"col":8,"direction":"left","clueCell":{"row":7,"col":9}},{"answer":"САЛАГА","row":1,"col":9,"direction":"down","clueCell":{"row":0,"col":9}},{"answer":"БАЛКОН","row":0,"col":3,"direction":"across","clueCell":{"row":0,"col":2}},{"answer":"КОМПАС","row":1,"col":0,"direction":"down","clueCell":{"row":0,"col":0}},{"answer":"ГОЛУБЬ","row":8,"col":0,"direction":"down","clueCell":{"row":7,"col":0}},{"answer":"МОСТ","row":2,"col":8,"direction":"down","clueCell":{"row":1,"col":8}},{"answer":"ЛИСА","row":8,"col":1,"direction":"down","clueCell":{"row":7,"col":1}},{"answer":"РЫСЬ","row":10,"col":5,"direction":"left","clueCell":{"row":10,"col":6}},{"answer":"БАНК","row":10,"col":7,"direction":"down","clueCell":{"row":9,"col":7}},{"answer":"ЯХТА","row":9,"col":3,"direction":"across","clueCell":{"row":9,"col":2}},{"answer":"ГЕРБ","row":11,"col":3,"direction":"across","clueCell":{"row":11,"col":2}},{"answer":"ЗЕБРА","row":1,"col":1,"direction":"down","clueCell":{"row":0,"col":1}},{"answer":"ТЫКВА","row":1,"col":6,"direction":"left","clueCell":{"row":1,"col":7}},{"answer":"ВИРУС","row":3,"col":3,"direction":"across","clueCell":{"row":3,"col":2}},{"answer":"КАРТА","row":4,"col":6,"direction":"left","clueCell":{"row":4,"col":7}},{"answer":"ПЛАТО","row":2,"col":6,"direction":"left","clueCell":{"row":2,"col":7}},{"answer":"СКАЛА","row":9,"col":8,"direction":"down","clueCell":{"row":8,"col":8}},{"answer":"ОПЕРА","row":9,"col":9,"direction":"down","clueCell":{"row":8,"col":9}},{"answer":"КОЛОС","row":12,"col":5,"direction":"left","clueCell":{"row":12,"col":6}},{"answer":"СТРИЖ","row":13,"col":2,"direction":"across","clueCell":{"row":13,"col":1}},{"answer":"СКАТ","row":5,"col":7,"direction":"down","clueCell":{"row":4,"col":7}}],[{"answer":"РУЧЕЙ","row":12,"col":2,"direction":"across","clueCell":{"row":12,"col":1}},{"answer":"ФИЛИН","row":10,"col":5,"direction":"left","clueCell":{"row":10,"col":6}},{"answer":"ОКЕАН","row":8,"col":2,"direction":"across","clueCell":{"row":8,"col":1}},{"answer":"ОБЛАКО","row":7,"col":6,"direction":"left","clueCell":{"row":7,"col":7}},{"answer":"ТИШИНА","row":13,"col":5,"direction":"left","clueCell":{"row":13,"col":6}},{"answer":"ШКОЛА","row":9,"col":5,"direction":"left","clueCell":{"row":9,"col":6}},{"answer":"БЛЮДО","row":11,"col":2,"direction":"across","clueCell":{"row":11,"col":1}},{"answer":"СМЕЛЫЙ","row":1,"col":9,"direction":"down","clueCell":{"row":0,"col":9}},{"answer":"КОМЕТА","row":6,"col":3,"direction":"across","clueCell":{"row":6,"col":2}},{"answer":"БАРСУК","row":1,"col":1,"direction":"across","clueCell":{"row":1,"col":0}},{"answer":"ПАЛЬМА","row":8,"col":9,"direction":"down","clueCell":{"row":7,"col":9}},{"answer":"БАШМАК","row":8,"col":8,"direction":"down","clueCell":{"row":7,"col":8}},{"answer":"ЗОЛОТОЙ","row":0,"col":6,"direction":"left","clueCell":{"row":0,"col":7}},{"answer":"ВИШНЯ","row":1,"col":8,"direction":"down","clueCell":{"row":0,"col":8}},{"answer":"ВЕДРО","row":9,"col":7,"direction":"down","clueCell":{"row":8,"col":7}},{"answer":"ВЕТЕР","row":8,"col":0,"direction":"down","clueCell":{"row":7,"col":0}},{"answer":"ХРАМ","row":3,"col":0,"direction":"down","clueCell":{"row":2,"col":0}},{"answer":"ТЕНТ","row":3,"col":1,"direction":"down","clueCell":{"row":2,"col":1}},{"answer":"ОВОД","row":5,"col":5,"direction":"left","clueCell":{"row":5,"col":6}},{"answer":"ВИНО","row":2,"col":7,"direction":"down","clueCell":{"row":1,"col":7}},{"answer":"ХЛЕБ","row":4,"col":5,"direction":"left","clueCell":{"row":4,"col":6}},{"answer":"СТУЛ","row":2,"col":5,"direction":"left","clueCell":{"row":2,"col":6}},{"answer":"ГРИБ","row":3,"col":3,"direction":"across","clueCell":{"row":3,"col":2}},{"answer":"КОЛИБРИ","row":7,"col":2,"direction":"down","clueCell":{"row":6,"col":2}}],[{"answer":"ЁЖИК","row":8,"col":6,"direction":"across","clueCell":{"row":8,"col":5}},{"answer":"ОКНО","row":10,"col":8,"direction":"left","clueCell":{"row":10,"col":9}},{"answer":"РЮКЗАК","row":7,"col":8,"direction":"left","clueCell":{"row":7,"col":9}},{"answer":"ГОРОД","row":5,"col":8,"direction":"left","clueCell":{"row":5,"col":9}},{"answer":"ВИНА","row":11,"col":6,"direction":"across","clueCell":{"row":11,"col":5}},{"answer":"КОЗА","row":9,"col":6,"direction":"across","clueCell":{"row":9,"col":5}},{"answer":"ТИГР","row":12,"col":8,"direction":"left","clueCell":{"row":12,"col":9}},{"answer":"ЗАВОД","row":6,"col":5,"direction":"across","clueCell":{"row":6,"col":4}},{"answer":"КОСТЁР","row":1,"col":0,"direction":"down","clueCell":{"row":0,"col":0}},{"answer":"ДОБРЫЙ","row":1,"col":7,"direction":"left","clueCell":{"row":1,"col":8}},{"answer":"ЛАДОНЬ","row":8,"col":2,"direction":"down","clueCell":{"row":7,"col":2}},{"answer":"ВОКЗАЛ","row":8,"col":0,"direction":"down","clueCell":{"row":7,"col":0}},{"answer":"МУДРЫЙ","row":8,"col":1,"direction":"down","clueCell":{"row":7,"col":1}},{"answer":"ЛАМПА","row":2,"col":1,"direction":"down","clueCell":{"row":1,"col":1}},{"answer":"КОЛОДЕЦ","row":0,"col":2,"direction":"across","clueCell":{"row":0,"col":1}},{"answer":"БЕРЕГ","row":13,"col":5,"direction":"across","clueCell":{"row":13,"col":4}},{"answer":"КОПЬЁ","row":9,"col":3,"direction":"down","clueCell":{"row":8,"col":3}},{"answer":"КЛЮЧ","row":3,"col":2,"direction":"down","clueCell":{"row":2,"col":2}},{"answer":"НЕРВ","row":3,"col":3,"direction":"down","clueCell":{"row":2,"col":3}},{"answer":"ЖЮРИ","row":2,"col":7,"direction":"left","clueCell":{"row":2,"col":8}},{"answer":"ПЕРО","row":1,"col":9,"direction":"down","clueCell":{"row":0,"col":9}},{"answer":"СНЕГ","row":3,"col":5,"direction":"across","clueCell":{"row":3,"col":4}},{"answer":"ДЖАЗ","row":4,"col":7,"direction":"left","clueCell":{"row":4,"col":8}},{"answer":"МОРЕ","row":9,"col":4,"direction":"down","clueCell":{"row":8,"col":4}},{"answer":"ГОРИЗОНТ","row":5,"col":8,"direction":"down","clueCell":{"row":4,"col":8}}]];
 
   function hashSeed(value) {
     let hash = 2166136261;
@@ -93,53 +29,24 @@
     };
   }
 
-  function shuffled(items, random) {
-    const result = items.slice();
-    for (let index = result.length - 1; index > 0; index -= 1) {
-      const swap = Math.floor(random() * (index + 1));
-      [result[index], result[swap]] = [result[swap], result[index]];
-    }
-    return result;
-  }
-
-  function makeWord(entry, id, direction, clueRow, clueCol) {
-    const starts = {
-      across: [clueRow, clueCol + 1],
-      left: [clueRow, clueCol - 1],
-      down: [clueRow + 1, clueCol],
-    };
-    const [row, col] = starts[direction];
-    return {
-      id: `w${id}`,
-      answer: entry.answer,
-      clue: entry.clue,
-      row,
-      col,
-      direction,
-      clueCell: { row: clueRow, col: clueCol },
-      arrow: direction === 'down' ? '↓' : direction === 'left' ? '←' : '→',
-      crossings: [],
-    };
-  }
-
   function createPuzzle(sourceWords, seed, number) {
-    const random = randomFactory(`${seed}:${number}`);
-    const template = TEMPLATES[(number - 1) % TEMPLATES.length];
-    const pools = new Map();
-    for (const [, length] of template) {
-      if (pools.has(length)) continue;
-      const entries = sourceWords.filter((entry) => [...entry.answer].length === length && entry.clue);
-      const needed = template.filter((tile) => tile[1] === length).length;
-      if (entries.length < needed) throw new Error(`Для сетки нужны ${needed} слов из ${length} букв`);
-      pools.set(length, shuffled(entries, random));
-    }
-    const offsets = new Map();
-    const words = template.map(([direction, length, clueRow, clueCol], index) => {
-      const offset = offsets.get(length) || 0;
-      offsets.set(length, offset + 1);
-      return makeWord(pools.get(length)[offset], index + 1, direction, clueRow, clueCol);
+    const layout = LAYOUTS[(number - 1) % LAYOUTS.length];
+    const entries = new Map(sourceWords.map((entry) => [entry.answer, entry]));
+    const words = layout.map((slot, index) => {
+      const entry = entries.get(slot.answer);
+      if (!entry) throw new Error(`Для сетки не найдено слово ${slot.answer}`);
+      return {
+        id: `w${index + 1}`,
+        answer: entry.answer,
+        clue: entry.clue,
+        row: slot.row,
+        col: slot.col,
+        direction: slot.direction,
+        clueCell: { ...slot.clueCell },
+        arrow: slot.direction === 'down' ? '↓' : slot.direction === 'left' ? '←' : '→',
+        crossings: [],
+      };
     });
-
     return {
       id: `scanword-${String(number).padStart(3, '0')}`,
       number,

@@ -2,12 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="build-version" content="v7">
+<meta name="build-version" content="v8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#efeee8">
 <title>Сканворды</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="styles.css?v=7">
+<link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
 <main id="game-screen" class="game-screen">
@@ -25,22 +25,22 @@
     <strong id="current-clue"></strong>
     <button id="next-word" aria-label="Следующее слово">›</button>
   </section>
-  <section id="letter-tiles" class="letter-tiles" aria-label="Буквы"></section>
   <footer class="game-foot">
-    <span id="puzzle-label">№1 · v7</span><span class="progress"><i id="progress-bar"></i></span>
+    <span id="puzzle-label">№1 · v8</span><span class="progress"><i id="progress-bar"></i></span>
     <button id="delete-button" aria-label="Стереть букву">⌫</button><button id="keyboard-toggle" aria-label="Открыть клавиатуру">⌨</button>
   </footer>
+  <section id="letter-tiles" class="letter-tiles" aria-label="Буквы"></section>
   <input id="native-input" class="native-input" inputmode="text" autocomplete="off" aria-label="Системная клавиатура">
 </main>
 
-<aside id="drawer" class="drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-menu" class="close-button" aria-label="Закрыть">×</button><h1>Сканворды</h1><p>Семь авторских сеток. Ни один ответ не повторяется.</p><div id="puzzle-list" class="puzzle-list"></div><small>Версия 7</small></div></aside>
+<aside id="drawer" class="drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-menu" class="close-button" aria-label="Закрыть">×</button><h1>Сканворды</h1><p>Семь плотных газетных сеток. Ни один ответ не повторяется.</p><div id="puzzle-list" class="puzzle-list"></div><small>Версия 8</small></div></aside>
 <aside id="hints-sheet" class="drawer hints-drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-hints" class="close-button" aria-label="Закрыть">×</button><h2>Подсказки</h2><button id="hint-letter">Открыть одну букву</button><button id="hint-word">Открыть всё слово</button><button id="hint-extras">Убрать лишние буквы</button></div></aside>
 <output id="feedback" class="feedback" aria-live="polite"></output>
 <canvas id="confetti"></canvas>
 <div id="complete-dialog" class="complete-dialog" hidden><div><b>Сканворд разгадан! 🎉</b><span>Точно и внимательно</span><button id="next-button">Следующий</button><button id="catalog-button">Выбрать другой</button></div></div>
-<script src="data/words.js?v=7"></script>
-<script src="data/puzzles.js?v=7"></script>
-<script src="js/generator.js?v=7"></script>
-<script src="js/app.js?v=7"></script>
+<script src="data/words.js?v=8"></script>
+<script src="data/puzzles.js?v=8"></script>
+<script src="js/generator.js?v=8"></script>
+<script src="js/app.js?v=8"></script>
 </body>
 </html>

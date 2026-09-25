@@ -13,6 +13,9 @@ test('page is direct-file and iPhone ready', () => {
   assert.doesNotMatch(html, /type=["']module["']/);
   assert.match(html, /data\/puzzles\.js/);
   assert.match(css, /safe-area-inset-bottom/);
+  assert.match(css, /height:\s*100dvh/);
+  assert.match(css, /grid-template-rows:\s*repeat\(var\(--board-rows\),/);
+  assert.ok(html.indexOf('class="game-foot"') < html.indexOf('id="letter-tiles"'), 'tiles must be the last game control above the bottom safe area');
   assert.match(css, /-webkit-text-size-adjust:\s*100%/);
   assert.match(css, /min-width:\s*44px/);
   assert.match(css, /min-height:\s*44px/);
