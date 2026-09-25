@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const STORE='nadiia-scanwords-v15';
+const STORE='nadiia-scanwords-v16';
 const puzzles=window.SCANWORD_PUZZLES||[];
 const EXTRA=[...'АЕИОУЫЭЮЯБВГДЖЗЙКЛМНПРСТФХЦЧШЩ'];
 const $=selector=>document.querySelector(selector);
@@ -59,7 +59,7 @@ function launchWordConfetti(word){const cells=wordCells(word),middle=cells[Math.
 function launchPuzzleConfetti(){burstConfetti(innerWidth/2,innerHeight*.38,220,1.7)}
 function toast(message){els.feedback.textContent=message;els.feedback.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>els.feedback.classList.remove('show'),1700)}
 function finish(){if(!els.dialog.hidden)return;saveGame();launchPuzzleConfetti();els.dialog.hidden=false}
-function render(){renderBoard();renderTiles();const word=activeWord(),total=Object.keys(state.solution).length,done=Object.entries(state.solution).filter(([cellKey,value])=>state.cells[cellKey]===value.letter).length;els.clue.textContent=word.clue;els.label.textContent=`№${state.puzzle.number} · ${Math.round(done/total*100)}% · v15`;els.progress.style.width=`${done/total*100}%`;resizeBoard()}
+function render(){renderBoard();renderTiles();const word=activeWord(),total=Object.keys(state.solution).length,done=Object.entries(state.solution).filter(([cellKey,value])=>state.cells[cellKey]===value.letter).length;els.clue.textContent=word.clue;els.label.textContent=`№${state.puzzle.number} · ${Math.round(done/total*100)}% · v16`;els.progress.style.width=`${done/total*100}%`;resizeBoard()}
 function renderPuzzleList(){els.list.replaceChildren(...puzzles.map(puzzle=>{const button=document.createElement('button');button.classList.toggle('is-active',state?.puzzle.id===puzzle.id);button.textContent=`№${puzzle.number} · ${puzzle.category}${saved[puzzle.id]?.completed?' · готово':''}`;button.onclick=()=>{openPuzzle(puzzle);closeDrawer(els.drawer)};return button}))}
 function openDrawer(drawer){drawer.classList.add('open');drawer.setAttribute('aria-hidden','false')}
 function closeDrawer(drawer){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true')}
@@ -73,6 +73,6 @@ els.grid.addEventListener('click',event=>{if(panMoved){event.preventDefault();ev
 function endPointer(event){pointers.delete(event.pointerId);if(pointers.size<2)pinchStart=null}
 els.grid.addEventListener('pointerup',endPointer);els.grid.addEventListener('pointercancel',endPointer);
 
-window.render_game_to_text=()=>JSON.stringify({mode:els.dialog.hidden?'playing':'complete',version:'v15',puzzle:state.puzzle.number,category:state.puzzle.category,grid:{cols:state.puzzle.cols,rows:state.puzzle.rows,letters:Object.keys(state.solution).length,clues:state.puzzle.words.length,blocks:state.puzzle.blocks.length,words:state.puzzle.words.length,zoom:state.zoom,scrollLeft:els.board.scrollLeft,scrollTop:els.board.scrollTop},active:{clue:activeWord().clue,direction:arrowFor(activeWord()),length:activeWord().answer.length},filledCells:Object.keys(state.cells).length,totalCells:Object.keys(state.solution).length,complete:puzzleDone()});window.advanceTime=()=>{if(state)render()};
-if(!puzzles.length)throw new Error('Нет сканвордов');openPuzzle(puzzles[0]);if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=15').catch(()=>{});
+window.render_game_to_text=()=>JSON.stringify({mode:els.dialog.hidden?'playing':'complete',version:'v16',puzzle:state.puzzle.number,category:state.puzzle.category,grid:{cols:state.puzzle.cols,rows:state.puzzle.rows,letters:Object.keys(state.solution).length,clues:state.puzzle.words.length,blocks:state.puzzle.blocks.length,words:state.puzzle.words.length,zoom:state.zoom,scrollLeft:els.board.scrollLeft,scrollTop:els.board.scrollTop},active:{clue:activeWord().clue,direction:arrowFor(activeWord()),length:activeWord().answer.length},filledCells:Object.keys(state.cells).length,totalCells:Object.keys(state.solution).length,complete:puzzleDone()});window.advanceTime=()=>{if(state)render()};
+if(!puzzles.length)throw new Error('Нет сканвордов');openPuzzle(puzzles[0]);if('serviceWorker'in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./sw.js?v=16').catch(()=>{});
 })();
