@@ -2,12 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="build-version" content="v4">
+<meta name="build-version" content="v5">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#f1efe7">
+<meta name="theme-color" content="#efeee8">
 <title>Сканворды</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 <main id="catalog-screen" class="catalog-screen">
@@ -33,26 +33,35 @@
 
 <main id="game-screen" class="game-screen" hidden>
   <header class="game-head">
-    <button id="back-button" class="round-button" aria-label="Назад к списку">‹</button>
-    <div><h2 id="game-title">№1</h2><span id="game-category"></span></div>
-    <button id="hint-letter" class="round-button" aria-label="Открыть букву">?</button>
+    <button id="back-button" class="icon-button" aria-label="Назад к списку">‹</button>
+    <div class="game-heading"><h2 id="game-title">№1</h2><span id="game-category"></span></div>
+    <div class="game-tools">
+      <button id="delete-button" class="icon-button" aria-label="Стереть букву">⌫</button>
+      <button id="keyboard-toggle" class="icon-button" aria-label="Открыть клавиатуру">⌨</button>
+      <button id="hint-letter" class="icon-button" aria-label="Открыть букву">?</button>
+      <button id="hint-word" class="icon-button word-hint" aria-label="Открыть слово">сл</button>
+    </div>
   </header>
   <section class="board-area"><div id="scanword-grid" class="scanword-grid" role="grid" aria-label="Сетка сканворда"></div></section>
   <section class="play-panel">
-    <div class="active-clue"><b id="direction-badge">→</b><span id="active-length"></span><strong id="puzzle-percent">0%</strong></div>
-    <div id="feedback" class="feedback" aria-live="polite"></div>
+    <div class="active-clue">
+      <b id="direction-badge">→</b>
+      <span id="active-length"></span>
+      <strong id="puzzle-percent">0%</strong>
+      <button id="hint-extras" aria-label="Убрать лишние буквы">− лишние</button>
+      <output id="feedback" class="feedback" aria-live="polite"></output>
+    </div>
     <div id="letter-tiles" class="letter-tiles" aria-label="Буквы"></div>
-    <div class="play-actions"><button id="delete-button">⌫</button><button id="keyboard-toggle">Клавиатура</button><button id="hint-extras">Убрать лишние</button></div>
   </section>
   <input id="native-input" class="native-input" inputmode="text" autocomplete="off" aria-label="Системная клавиатура">
 </main>
 
-<aside id="drawer" class="drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-menu" class="round-button">×</button><h2>Сканворды</h2><p>90 авторских сеток для короткой разминки.</p><button id="drawer-list">К списку</button><button id="reset-progress">Сбросить прогресс</button><small>Версия 4</small></div></aside>
+<aside id="drawer" class="drawer" aria-hidden="true"><div class="drawer-sheet"><button id="close-menu" class="round-button">×</button><h2>Сканворды</h2><p>90 авторских плотных сеток для короткой разминки.</p><button id="drawer-list">К списку</button><button id="reset-progress">Сбросить прогресс</button><small>Версия 5</small></div></aside>
 <canvas id="confetti"></canvas>
 <div id="complete-dialog" class="complete-dialog" hidden><div><b>Сканворд разгадан! 🎉</b><span>Отличная работа</span><button id="next-button">Следующий</button><button id="catalog-button">К списку</button></div></div>
-<script src="data/words.js?v=4"></script>
-<script src="data/puzzles.js?v=4"></script>
-<script src="js/generator.js?v=4"></script>
-<script src="js/app.js?v=4"></script>
+<script src="data/words.js?v=5"></script>
+<script src="data/puzzles.js?v=5"></script>
+<script src="js/generator.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
 </body>
 </html>

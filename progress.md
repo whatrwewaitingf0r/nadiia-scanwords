@@ -4,3 +4,5 @@ Original prompt: Build and publish an original, dense, fit-to-screen scanword fo
 - 2026-09-25: Added accessibility-oriented research notes and a static acceptance test.
 - 2026-09-25: Correct Pages target is `whatrwewaitingf0r/nadiia-scanwords`; public cache-busting URL is `https://whatrwewaitingf0r.github.io/nadiia-scanwords/?v=3`.
 - 2026-09-25: v4 rebuilt around a catalog-first landing screen with 90 numbered puzzles, category filter, statistics, 3/5-column responsive cards with black-and-white thumbnails, dense across/down gameplay, 20 letter tiles in two rows, subtle word sparkle, puzzle confetti, and back navigation.
+- 2026-09-25: v5 replaces the sparse 15×15 crossword with a packed 10×7 scanword template. Every board uses all 70 cells: 12 grey clue cells and 58 white letter cells (100% occupancy), including →, ← and ↓ answers whose first letter starts immediately after the clue.
+- 2026-09-25: The gameplay viewport now reserves only a thin toolbar plus one clue bar and exactly two tile rows; board cells are square and computed from `min(available width / 10, available height / 7)` with a runtime resize guard.
